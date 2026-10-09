@@ -3,8 +3,11 @@ import {
   Database, Sparkles, Filter, Split, Cpu, Award, HardDrive,
   Server, Monitor, Sliders, CheckCircle2, BarChart3, ArrowDown
 } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollAnimation';
 
 export default function ProjectFlowView() {
+  const [containerRef, containerVisible] = useScrollReveal({ threshold: 0.05 });
+
   const steps = [
     {
       title: 'Dataset Ingestion',
@@ -64,7 +67,7 @@ export default function ProjectFlowView() {
     },
     {
       title: 'FastAPI Microservice',
-      subtitle: 'Serving REST endpoints (/health, /model-info, /predict, /predictions)',
+      subtitle: 'Serving REST endpoints (/health, /model-info, /predict, /predictions, /security-status)',
       icon: Server,
       tag: 'Backend API',
       color: 'border-teal-500/40 text-teal-400 bg-teal-500/10'
@@ -114,45 +117,53 @@ export default function ProjectFlowView() {
   ];
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div
+      ref={containerRef}
+      className={`space-y-8 transition-all duration-700 ${
+        containerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+      }`}
+    >
       <div>
-        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+        <h2 className="text-3xl font-black text-white flex items-center gap-3">
+          <div className="p-2.5 rounded-2xl bg-cyan-400/10 text-cyan-400 border border-cyan-400/20">
+            <Cpu size={24} />
+          </div>
           <span>Complete System Architecture Flow</span>
         </h2>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-slate-400 mt-1">
           Visual representation of the end-to-end data processing, ML training, serving, and persistence pipeline.
         </p>
       </div>
 
-      <div className="glass-panel p-6 md:p-8">
+      <div className="glass-card p-6 md:p-10 border-white/10">
         <div className="max-w-2xl mx-auto space-y-3">
           {steps.map((step, idx) => {
             const Icon = step.icon;
             const isLast = idx === steps.length - 1;
             return (
               <div key={idx} className="flex flex-col items-center">
-                <div className="w-full flex items-center gap-4 p-4 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition">
-                  <div className={`p-3 rounded-lg border shrink-0 ${step.color}`}>
+                <div className="w-full flex items-center gap-4 p-4 rounded-2xl bg-slate-900/60 border border-white/5 hover:border-cyan-400/30 transition duration-200">
+                  <div className={`p-3 rounded-xl border shrink-0 ${step.color}`}>
                     <Icon size={20} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
                       <h4 className="text-sm font-bold text-white truncate">{step.title}</h4>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700 shrink-0">
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-800 text-slate-400 border border-slate-700 shrink-0">
                         {step.tag}
                       </span>
                     </div>
                     <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">{step.subtitle}</p>
                   </div>
-                  <div className="text-xs font-mono font-bold text-slate-600 px-2">
+                  <div className="text-xs font-mono font-bold text-slate-500 px-2">
                     #{idx + 1}
                   </div>
                 </div>
 
                 {!isLast && (
-                  <div className="my-1 text-cyan-500/50 flex flex-col items-center">
-                    <div className="h-4 w-0.5 bg-gradient-to-b from-cyan-500/40 to-transparent" />
-                    <ArrowDown size={14} className="text-cyan-400/80 -mt-1" />
+                  <div className="my-1.5 text-cyan-400/60 flex flex-col items-center">
+                    <div className="h-4 w-0.5 bg-gradient-to-b from-cyan-400/40 to-transparent" />
+                    <ArrowDown size={14} className="text-cyan-400 -mt-1" />
                   </div>
                 )}
               </div>

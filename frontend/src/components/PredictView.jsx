@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Activity, AlertCircle, RefreshCw, Sparkles, CheckCircle, ShieldAlert, Heart, Info, ArrowUpRight } from 'lucide-react';
+import { Activity, AlertCircle, RefreshCw, Sparkles, CheckCircle, ShieldAlert, Heart, Info, ShieldCheck, Lock } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollAnimation';
 
 const PRESETS = [
   {
@@ -25,6 +26,7 @@ const PRESETS = [
 ];
 
 export default function PredictView({ onPredictionSuccess }) {
+  const [containerRef, containerVisible] = useScrollReveal({ threshold: 0.05 });
   const [formData, setFormData] = useState({
     'PM2.5': 65.0,
     'PM10': 120.0,
@@ -73,7 +75,7 @@ export default function PredictView({ onPredictionSuccess }) {
       min: 0,
       max: 20,
       step: 0.05,
-      description: 'Colorless, toxic gas from incomplete engine combustion.'
+      description: 'Toxic gas generated from incomplete engine combustion.'
     },
     {
       key: 'SO2',
@@ -96,9 +98,10 @@ export default function PredictView({ onPredictionSuccess }) {
   ];
 
   const handleInputChange = (key, value) => {
+    const parsed = parseFloat(value);
     setFormData((prev) => ({
       ...prev,
-      [key]: parseFloat(value) || 0
+      [key]: isNaN(parsed) ? 0 : parsed
     }));
   };
 
@@ -111,6 +114,15 @@ export default function PredictView({ onPredictionSuccess }) {
     e.preventDefault();
     setLoading(true);
     setError(null);
+
+    // Client-side Sanitization Guard
+    for (const [k, v] of Object.entries(formData)) {
+      if (isNaN(v) || !isFinite(v) || v < 0) {
+        setError(`Security Validation Error: ${k} must be a positive finite number.`);
+        setLoading(false);
+        return;
+      }
+    }
 
     const payload = {
       'PM2.5': Number(formData['PM2.5']),
@@ -149,16 +161,23 @@ export default function PredictView({ onPredictionSuccess }) {
   };
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      {/* Header and Quick Presets */}
+    <div
+      ref={containerRef}
+      className={`space-y-8 transition-all duration-700 ${
+        containerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+      }`}
+    >
+      {/* Header & Presets */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-            <Activity className="text-cyan-400" />
+          <h2 className="text-3xl font-black text-white flex items-center gap-3">
+            <div className="p-2.5 rounded-2xl bg-cyan-400/10 text-cyan-400 border border-cyan-400/20">
+              <Activity size={24} />
+            </div>
             <span>Air Quality Prediction Engine</span>
           </h2>
-          <p className="text-sm text-slate-400">
-            Enter real ambient pollutant readings or select an authentic environmental preset scenario.
+          <p className="text-sm text-slate-400 mt-1">
+            Input verified criteria pollutant measurements or click an atmospheric preset below.
           </p>
         </div>
 
@@ -172,9 +191,9 @@ export default function PredictView({ onPredictionSuccess }) {
               key={idx}
               type="button"
               onClick={() => applyPreset(p.values)}
-              className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700/80 text-slate-300 hover:text-white border border-slate-700 transition flex items-center gap-1.5"
+              className="text-xs px-3.5 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-white/10 hover:border-cyan-400/40 transition duration-200 flex items-center gap-1.5 shadow-sm"
             >
-              <span>{p.name}</span>
+              <span className="font-semibold">{p.name}</span>
               <span className="text-[10px] text-cyan-400 font-mono">({p.tag})</span>
             </button>
           ))}
@@ -182,12 +201,15 @@ export default function PredictView({ onPredictionSuccess }) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Input Parameters Form */}
-        <form onSubmit={handlePredict} className="lg:col-span-7 glass-panel p-6 space-y-6">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <h3 className="text-base font-semibold text-white">Atmospheric Pollutant Inputs</h3>
-            <span className="text-xs font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded">
-              Features: 6 Criteria Pollutants
+        {/* Input Parameters Form (Glass UI Card) */}
+        <form onSubmit={handlePredict} className="lg:col-span-7 glass-card p-6 md:p-8 space-y-6 border-white/10">
+          <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <div>
+              <h3 className="text-base font-bold text-white">Atmospheric Pollutant Inputs</h3>
+              <p className="text-xs text-slate-400">Validated against physiological and meteorological bounds</p>
+            </div>
+            <span className="text-xs font-mono font-semibold text-cyan-400 bg-cyan-400/10 px-2.5 py-1 rounded-lg border border-cyan-400/20">
+              6 Criteria Features
             </span>
           </div>
 
@@ -195,13 +217,16 @@ export default function PredictView({ onPredictionSuccess }) {
             {featureConfigs.map((feat) => {
               const val = formData[feat.key];
               return (
-                <div key={feat.key} className="space-y-2 p-3 rounded-xl bg-slate-900/50 border border-slate-800/80">
+                <div
+                  key={feat.key}
+                  className="space-y-2.5 p-4 rounded-2xl bg-slate-900/60 border border-white/5 hover:border-cyan-400/30 transition duration-200"
+                >
                   <div className="flex items-center justify-between">
-                    <label htmlFor={`input-${feat.key}`} className="text-xs font-semibold text-slate-200">
+                    <label htmlFor={`input-${feat.key}`} className="text-xs font-bold text-slate-200">
                       {feat.name}
                     </label>
                     <span className="text-xs font-mono text-cyan-400 font-bold">
-                      {val} <span className="text-slate-400 text-[10px] font-normal">{feat.unit}</span>
+                      {val} <span className="text-slate-500 text-[10px] font-normal">{feat.unit}</span>
                     </span>
                   </div>
 
@@ -216,7 +241,7 @@ export default function PredictView({ onPredictionSuccess }) {
                     className="w-full accent-cyan-400 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
                   />
 
-                  {/* Direct Number Input */}
+                  {/* Numerical Input with Sanitization Bounds */}
                   <div className="flex items-center justify-between gap-2">
                     <input
                       id={`input-${feat.key}`}
@@ -226,107 +251,133 @@ export default function PredictView({ onPredictionSuccess }) {
                       step={feat.step}
                       value={val}
                       onChange={(e) => handleInputChange(feat.key, e.target.value)}
-                      className="glass-input text-xs py-1.5 px-2.5 font-mono"
+                      className="glass-input text-xs py-2 px-3 font-mono font-bold"
                       required
                     />
                     <span className="text-[11px] text-slate-400 font-mono shrink-0">{feat.unit}</span>
                   </div>
-                  <p className="text-[11px] text-slate-400 leading-tight pt-1">{feat.description}</p>
+                  <p className="text-[11px] text-slate-400 leading-tight">{feat.description}</p>
                 </div>
               );
             })}
           </div>
 
           {error && (
-            <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-sm flex items-start gap-3">
+            <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-sm flex items-start gap-3">
               <AlertCircle size={18} className="shrink-0 mt-0.5 text-rose-400" />
               <div>
-                <p className="font-semibold">Prediction Error</p>
+                <p className="font-bold">Validation Error</p>
                 <p className="text-xs text-rose-300/90 mt-0.5">{error}</p>
               </div>
             </div>
           )}
 
-          <button
-            id="predict-aqi-btn"
-            type="submit"
-            disabled={loading}
-            className="glow-btn w-full py-3.5 text-base rounded-xl font-bold"
-          >
-            {loading ? (
-              <>
-                <RefreshCw size={18} className="animate-spin" />
-                <span>Running ML Inference...</span>
-              </>
-            ) : (
-              <>
-                <Activity size={18} />
-                <span>Predict AQI with Trained ML Model</span>
-              </>
-            )}
-          </button>
+          <div className="pt-2">
+            <button
+              id="predict-aqi-btn"
+              type="submit"
+              disabled={loading}
+              className="glass-btn w-full py-4 text-base rounded-2xl font-black shadow-xl shadow-cyan-400/25 tracking-wide"
+            >
+              {loading ? (
+                <>
+                  <RefreshCw size={20} className="animate-spin text-slate-950" />
+                  <span>Computing Inference in Pipeline...</span>
+                </>
+              ) : (
+                <>
+                  <Activity size={20} className="text-slate-950 stroke-[2.5]" />
+                  <span>Predict AQI with Trained ML Model</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Security & Sanitization notice */}
+          <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1 font-mono">
+            <span className="flex items-center gap-1.5">
+              <Lock size={12} className="text-emerald-400" />
+              Input Sanitization Active
+            </span>
+            <span>Max 64KB Payload Shield</span>
+          </div>
         </form>
 
-        {/* Prediction Results Display */}
+        {/* Prediction Results Display (Glass Card with Glowing Borders) */}
         <div className="lg:col-span-5 space-y-6">
           {result ? (
-            <div className="glass-panel p-6 space-y-6 border-t-4 transition-all" style={{ borderTopColor: result.color }}>
+            <div
+              className="glass-card p-6 md:p-8 space-y-6 border-t-4 transition-all duration-500"
+              style={{
+                borderTopColor: result.color,
+                boxShadow: `0 20px 50px -15px ${result.color}35`
+              }}
+            >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-slate-400 tracking-wider uppercase">Inference Output</span>
+                <span className="text-xs font-bold text-slate-400 tracking-wider uppercase">Inference Output</span>
                 <span className="text-xs font-mono text-slate-400">{result.timestamp}</span>
               </div>
 
-              {/* AQI Score Indicator */}
-              <div className="text-center py-4 space-y-2 relative overflow-hidden rounded-2xl bg-slate-900/60 p-6 border border-slate-800">
-                <div className="text-xs font-medium text-slate-400 uppercase tracking-widest">Predicted AQI</div>
+              {/* Dynamic AQI Score Display with Radial Glow */}
+              <div className="text-center py-6 space-y-3 relative overflow-hidden rounded-3xl bg-slate-900/80 p-6 border border-white/10">
                 <div
-                  className="text-6xl md:text-7xl font-black tracking-tight"
-                  style={{ color: result.color, textShadow: `0 0 35px ${result.color}40` }}
+                  className="absolute inset-0 opacity-20 blur-2xl pointer-events-none"
+                  style={{ backgroundColor: result.color }}
+                />
+                <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest relative z-10">
+                  Predicted Air Quality Index
+                </div>
+                <div
+                  className="text-7xl md:text-8xl font-black tracking-tight relative z-10"
+                  style={{ color: result.color, textShadow: `0 0 40px ${result.color}60` }}
                 >
                   {result.predicted_aqi}
                 </div>
                 <div
-                  className="inline-block px-4 py-1 rounded-full text-sm font-bold tracking-wide mt-2"
-                  style={{ backgroundColor: `${result.color}20`, color: result.color, border: `1px solid ${result.color}50` }}
+                  className="inline-block px-5 py-1.5 rounded-full text-sm font-extrabold tracking-wide mt-2 relative z-10"
+                  style={{ backgroundColor: `${result.color}25`, color: result.color, border: `1px solid ${result.color}60` }}
                 >
                   {result.category} • {result.risk_level}
                 </div>
               </div>
 
               {/* Health Advisory */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2 text-sm font-semibold text-white">
-                  <ShieldAlert size={16} style={{ color: result.color }} />
-                  <span>Health Advisory</span>
+              <div className="space-y-2.5">
+                <div className="flex items-center gap-2 text-sm font-bold text-white">
+                  <ShieldAlert size={17} style={{ color: result.color }} />
+                  <span>Statutory Health Advisory</span>
                 </div>
-                <p className="text-xs text-slate-300 leading-relaxed p-3.5 rounded-xl bg-slate-900/40 border border-slate-800">
+                <p className="text-xs text-slate-300 leading-relaxed p-4 rounded-2xl bg-slate-900/60 border border-white/5">
                   {result.health_advisory}
                 </p>
               </div>
 
               {/* Recommended Precautions */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2 text-sm font-semibold text-white">
-                  <Heart size={16} className="text-rose-400" />
+              <div className="space-y-2.5">
+                <div className="flex items-center gap-2 text-sm font-bold text-white">
+                  <Heart size={17} className="text-rose-400" />
                   <span>Actionable Precautions</span>
                 </div>
-                <p className="text-xs text-slate-300 leading-relaxed p-3.5 rounded-xl bg-slate-900/40 border border-slate-800">
+                <p className="text-xs text-slate-300 leading-relaxed p-4 rounded-2xl bg-slate-900/60 border border-white/5">
                   {result.precautions}
                 </p>
               </div>
 
-              {/* Stored Confirmation */}
-              <div className="flex items-center gap-2 pt-2 text-xs text-emerald-400">
-                <CheckCircle size={15} />
-                <span>Prediction logged to historical storage</span>
+              {/* Confirmation */}
+              <div className="flex items-center justify-between pt-2 border-t border-white/10 text-xs">
+                <span className="flex items-center gap-1.5 text-emerald-400">
+                  <CheckCircle size={14} />
+                  <span>Persisted to MongoDB</span>
+                </span>
+                <span className="text-slate-500 font-mono text-[11px]">Audit ID: {result.timestamp.replace(/[^0-9]/g, '')}</span>
               </div>
             </div>
           ) : (
-            <div className="glass-panel p-8 text-center space-y-4 border-dashed border-2 border-slate-800">
-              <div className="w-16 h-16 rounded-2xl bg-slate-800/80 text-cyan-400 flex items-center justify-center mx-auto">
+            <div className="glass-card p-10 text-center space-y-4 border-dashed border-2 border-white/10">
+              <div className="w-16 h-16 rounded-2xl bg-slate-900/80 text-cyan-400 flex items-center justify-center mx-auto border border-white/5">
                 <Activity size={32} />
               </div>
-              <h3 className="text-lg font-bold text-white">Ready for Prediction</h3>
+              <h3 className="text-lg font-bold text-white">Ready for ML Prediction</h3>
               <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
                 Adjust pollutant concentrations on the left or select an environmental preset, then click <strong>"Predict AQI"</strong> to run inference on the trained Scikit-learn model.
               </p>
@@ -334,7 +385,7 @@ export default function PredictView({ onPredictionSuccess }) {
           )}
 
           {/* Model Note */}
-          <div className="p-4 rounded-xl bg-slate-900/70 border border-slate-800/90 text-xs text-slate-400 flex items-start gap-3">
+          <div className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-xs text-slate-400 flex items-start gap-3">
             <Info size={16} className="text-cyan-400 shrink-0 mt-0.5" />
             <p className="leading-relaxed">
               Predictions are generated by the active trained regression pipeline, passing through standard imputation, scaling, and ensemble regression.

@@ -49,7 +49,15 @@ def test():
         print("Total Records in DB:", history["total_records"])
         print("Latest Stored Record:", history["history"][0]["predicted_aqi"], history["history"][0]["category"])
 
-    print("\nALL 5 API ENDPOINTS TESTED AND VERIFIED SUCCESSFULLY!")
+    print("\n--- 6. Testing GET /security-status ---")
+    with urllib.request.urlopen("http://127.0.0.1:8000/security-status") as resp:
+        print("Status:", resp.status)
+        sec = json.loads(resp.read().decode())
+        print("Rate Limiter:", sec["protections"]["rate_limiter"]["enabled"])
+        print("Security Headers Count:", len(sec["protections"]["security_headers"]["headers"]))
+        print("Payload Guard Cap:", sec["protections"]["payload_guard"]["max_allowed_bytes"], "bytes")
+
+    print("\nALL 6 API ENDPOINTS TESTED AND VERIFIED SUCCESSFULLY!")
 
 if __name__ == "__main__":
     test()
