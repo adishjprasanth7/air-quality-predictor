@@ -1,0 +1,51 @@
+{
+  "model_name": "Gradient Boosting Regressor",
+  "features": [
+    "PM2.5",
+    "PM10",
+    "NO2",
+    "CO",
+    "SO2",
+    "O3"
+  ],
+  "target": "AQI",
+  "trained_date": "2026-10-09 20:36:24",
+  "best_metrics": {
+    "MAE": 22.688,
+    "RMSE": 48.424,
+    "R2_Score": 0.871
+  },
+  "all_model_evaluations": {
+    "Linear Regression": {
+      "MAE": 31.801,
+      "RMSE": 64.631,
+      "R2_Score": 0.7702
+    },
+    "Random Forest Regressor": {
+      "MAE": 22.361,
+      "RMSE": 49.267,
+      "R2_Score": 0.8665
+    },
+    "Gradient Boosting Regressor": {
+      "MAE": 22.688,
+      "RMSE": 48.424,
+      "R2_Score": 0.871
+    }
+  },
+  "feature_importance": {
+    "PM2.5": 0.4944,
+    "CO": 0.4283,
+    "PM10": 0.0423,
+    "SO2": 0.0136,
+    "NO2": 0.0135,
+    "O3": 0.008
+  },
+  "dataset_info": {
+    "source": "CPCB / Kaggle Air Quality Data in India (city_day.csv)",
+    "total_records_used": 24801,
+    "train_records": 19840,
+    "test_records": 4961,
+    "split_ratio": "80/20",
+    "random_state": 42
+  }
+}

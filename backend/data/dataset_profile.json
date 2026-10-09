@@ -1,0 +1,200 @@
+{
+  "file_name": "city_day.csv",
+  "total_rows": 29531,
+  "total_columns": 16,
+  "columns": [
+    "City",
+    "Date",
+    "PM2.5",
+    "PM10",
+    "NO",
+    "NO2",
+    "NOx",
+    "NH3",
+    "CO",
+    "SO2",
+    "O3",
+    "Benzene",
+    "Toluene",
+    "Xylene",
+    "AQI",
+    "AQI_Bucket"
+  ],
+  "duplicate_rows": 0,
+  "missing_counts": {
+    "PM2.5": 4598,
+    "PM10": 11140,
+    "NH3": 10328,
+    "AQI": 4681,
+    "AQI_Bucket": 4681,
+    "NO": 3582,
+    "CO": 2059,
+    "NO2": 3585,
+    "NOx": 4185,
+    "SO2": 3854,
+    "O3": 4022,
+    "Benzene": 5623,
+    "Toluene": 8041,
+    "Xylene": 18109,
+    "City": 0,
+    "Date": 0
+  },
+  "missing_percentages": {
+    "City": 0.0,
+    "Date": 0.0,
+    "PM2.5": 15.57,
+    "PM10": 37.72,
+    "NO": 12.13,
+    "NO2": 12.14,
+    "NOx": 14.17,
+    "NH3": 34.97,
+    "CO": 6.97,
+    "SO2": 13.05,
+    "O3": 13.62,
+    "Benzene": 19.04,
+    "Toluene": 27.23,
+    "Xylene": 61.32,
+    "AQI": 15.85,
+    "AQI_Bucket": 15.85
+  },
+  "numerical_columns": [
+    "PM2.5",
+    "PM10",
+    "NO",
+    "NO2",
+    "NOx",
+    "NH3",
+    "CO",
+    "SO2",
+    "O3",
+    "Benzene",
+    "Toluene",
+    "Xylene",
+    "AQI"
+  ],
+  "categorical_columns": [
+    "City",
+    "Date",
+    "AQI_Bucket"
+  ],
+  "column_stats": {
+    "City": {
+      "type": "Categorical (string)",
+      "sample_values": [
+        "Ahmedabad",
+        "Ahmedabad",
+        "Ahmedabad",
+        "Ahmedabad",
+        "Ahmedabad"
+      ]
+    },
+    "Date": {
+      "type": "Categorical (string)",
+      "sample_values": [
+        "2015-01-01",
+        "2015-01-02",
+        "2015-01-03",
+        "2015-01-04",
+        "2015-01-05"
+      ]
+    },
+    "PM2.5": {
+      "type": "Numerical (float)",
+      "min": 0.04,
+      "max": 949.99,
+      "mean": 67.45
+    },
+    "PM10": {
+      "type": "Numerical (float)",
+      "min": 0.01,
+      "max": 1000.0,
+      "mean": 118.13
+    },
+    "NO": {
+      "type": "Numerical (float)",
+      "min": 0.02,
+      "max": 390.68,
+      "mean": 17.57
+    },
+    "NO2": {
+      "type": "Numerical (float)",
+      "min": 0.01,
+      "max": 362.21,
+      "mean": 28.56
+    },
+    "NOx": {
+      "type": "Numerical (float)",
+      "min": 0.0,
+      "max": 467.63,
+      "mean": 32.31
+    },
+    "NH3": {
+      "type": "Numerical (float)",
+      "min": 0.01,
+      "max": 352.89,
+      "mean": 23.48
+    },
+    "CO": {
+      "type": "Numerical (float)",
+      "min": 0.0,
+      "max": 175.81,
+      "mean": 2.25
+    },
+    "SO2": {
+      "type": "Numerical (float)",
+      "min": 0.01,
+      "max": 193.86,
+      "mean": 14.53
+    },
+    "O3": {
+      "type": "Numerical (float)",
+      "min": 0.01,
+      "max": 257.73,
+      "mean": 34.49
+    },
+    "Benzene": {
+      "type": "Numerical (float)",
+      "min": 0.0,
+      "max": 455.03,
+      "mean": 3.28
+    },
+    "Toluene": {
+      "type": "Numerical (float)",
+      "min": 0.0,
+      "max": 454.85,
+      "mean": 8.7
+    },
+    "Xylene": {
+      "type": "Numerical (float)",
+      "min": 0.0,
+      "max": 170.37,
+      "mean": 3.07
+    },
+    "AQI": {
+      "type": "Numerical (float)",
+      "min": 13.0,
+      "max": 2049.0,
+      "mean": 166.46
+    },
+    "AQI_Bucket": {
+      "type": "Categorical (string)",
+      "sample_values": [
+        "Poor",
+        "Very Poor",
+        "Severe",
+        "Severe",
+        "Severe"
+      ]
+    }
+  },
+  "target_variable": "AQI",
+  "target_stats": {
+    "total_records": 29531,
+    "non_null_records": 24850,
+    "missing_records": 4681,
+    "missing_pct": 15.85,
+    "min_aqi": 13.0,
+    "max_aqi": 2049.0,
+    "mean_aqi": 166.46
+  }
+}
