@@ -6,6 +6,7 @@ import DashboardView from './components/DashboardView';
 import ModelInfoView from './components/ModelInfoView';
 import ProjectFlowView from './components/ProjectFlowView';
 import SecurityModal from './components/SecurityModal';
+import { API_BASE_URL } from './config/api';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -14,7 +15,7 @@ export default function App() {
 
   const checkApiHealth = async () => {
     try {
-      const res = await fetch('http://localhost:8000/health');
+      const res = await fetch(`${API_BASE_URL}/health`);
       if (res.ok) {
         setApiStatus('online');
       } else {

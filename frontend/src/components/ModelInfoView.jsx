@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Cpu, Award, BarChart2, CheckCircle2, AlertTriangle, Layers, RefreshCw } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
 import { useScrollReveal } from '../hooks/useScrollAnimation';
+import { API_BASE_URL } from '../config/api';
 
 export default function ModelInfoView() {
   const [containerRef, containerVisible] = useScrollReveal({ threshold: 0.05 });
@@ -13,7 +14,7 @@ export default function ModelInfoView() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('http://localhost:8000/model-info');
+      const res = await fetch(`${API_BASE_URL}/model-info`);
       if (!res.ok) {
         throw new Error(`Model metadata unavailable (Status: ${res.status}). Ensure backend/training/train.py has been executed.`);
       }

@@ -5,6 +5,7 @@ import {
 } from 'recharts';
 import { BarChart3, Clock, TrendingUp, AlertCircle, RefreshCw } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollAnimation';
+import { API_BASE_URL } from '../config/api';
 
 export default function DashboardView({ onGoToPredict }) {
   const [containerRef, containerVisible] = useScrollReveal({ threshold: 0.05 });
@@ -16,7 +17,7 @@ export default function DashboardView({ onGoToPredict }) {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('http://localhost:8000/predictions?limit=30');
+      const res = await fetch(`${API_BASE_URL}/predictions?limit=30`);
       if (!res.ok) {
         throw new Error(`Failed to fetch history (Status: ${res.status})`);
       }

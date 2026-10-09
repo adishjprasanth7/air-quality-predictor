@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Activity, AlertCircle, RefreshCw, Sparkles, CheckCircle, ShieldAlert, Heart, Info, ShieldCheck, Lock } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollAnimation';
+import { API_BASE_URL } from '../config/api';
 
 const PRESETS = [
   {
@@ -134,7 +135,7 @@ export default function PredictView({ onPredictionSuccess }) {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/predict', {
+      const response = await fetch(`${API_BASE_URL}/predict`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

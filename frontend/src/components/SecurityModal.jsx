@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, ShieldCheck, Lock, Activity, AlertCircle, X, CheckCircle, RefreshCw, Key, FileCheck, Layers } from 'lucide-react';
+import { API_BASE_URL } from '../config/api';
 
 export default function SecurityModal({ isOpen, onClose }) {
   const [securityData, setSecurityData] = useState(null);
@@ -10,7 +11,7 @@ export default function SecurityModal({ isOpen, onClose }) {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('http://localhost:8000/security-status');
+      const res = await fetch(`${API_BASE_URL}/security-status`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setSecurityData(data);
