@@ -57,7 +57,23 @@ def test():
         print("Security Headers Count:", len(sec["protections"]["security_headers"]["headers"]))
         print("Payload Guard Cap:", sec["protections"]["payload_guard"]["max_allowed_bytes"], "bytes")
 
-    print("\nALL 6 API ENDPOINTS TESTED AND VERIFIED SUCCESSFULLY!")
+    print("\n--- 7. Testing GET /cities ---")
+    with urllib.request.urlopen("http://127.0.0.1:8000/cities") as resp:
+        print("Status:", resp.status)
+        cities_data = json.loads(resp.read().decode())
+        print("Total Cities:", cities_data["total_cities"])
+        print("National Mean AQI:", cities_data["national_mean_aqi"])
+        print("Most Polluted:", cities_data["most_polluted"])
+        print("Cleanest:", cities_data["cleanest"])
+
+    print("\n--- 8. Testing GET /cities/delhi ---")
+    with urllib.request.urlopen("http://127.0.0.1:8000/cities/delhi") as resp:
+        print("Status:", resp.status)
+        delhi = json.loads(resp.read().decode())
+        print("City:", delhi["city"], "| Mean AQI:", delhi["aqi"], "| Category:", delhi["category"])
+        print("Dominant Pollutant:", delhi["dominant_pollutant"])
+
+    print("\nALL 8 API ENDPOINTS TESTED AND VERIFIED SUCCESSFULLY!")
 
 if __name__ == "__main__":
     test()

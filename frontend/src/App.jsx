@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import HomeView from './components/HomeView';
+import PollutionMapView from './components/PollutionMapView';
 import PredictView from './components/PredictView';
 import DashboardView from './components/DashboardView';
 import ModelInfoView from './components/ModelInfoView';
@@ -12,6 +13,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [apiStatus, setApiStatus] = useState('offline');
   const [isSecurityOpen, setIsSecurityOpen] = useState(false);
+  const [selectedCityForPredict, setSelectedCityForPredict] = useState(null);
 
   const checkApiHealth = async () => {
     try {
@@ -32,6 +34,11 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
+  const handleSelectCityForPrediction = (city) => {
+    setSelectedCityForPredict(city);
+    setActiveTab('predict');
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-cyan-400 selection:text-slate-950">
       {/* Navigation with Glass Theme and Security Trigger */}
@@ -47,11 +54,21 @@ export default function App() {
         {activeTab === 'home' && (
           <HomeView
             onStartPrediction={() => setActiveTab('predict')}
+            onExploreMap={() => setActiveTab('map')}
             onOpenSecurity={() => setIsSecurityOpen(true)}
           />
         )}
+        {activeTab === 'map' && (
+          <PollutionMapView
+            onSelectCityForPrediction={handleSelectCityForPrediction}
+          />
+        )}
         {activeTab === 'predict' && (
-          <PredictView onPredictionSuccess={() => {}} />
+          <PredictView
+            initialCityData={selectedCityForPredict}
+            onNavigateToMap={() => setActiveTab('map')}
+            onPredictionSuccess={() => {}}
+          />
         )}
         {activeTab === 'dashboard' && (
           <DashboardView onGoToPredict={() => setActiveTab('predict')} />

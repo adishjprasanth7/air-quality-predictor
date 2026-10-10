@@ -1,0 +1,3569 @@
+/**
+ * Authentically computed CPCB Monitored Cities & Pollution Rates Dataset
+ */
+export const CITIES_POLLUTION_DATA = [
+  {
+    "id": "ahmedabad",
+    "city": "Ahmedabad",
+    "state": "Gujarat",
+    "region": "West",
+    "description": "Major commercial and industrial hub in western India.",
+    "lat": 23.0225,
+    "lng": 72.5714,
+    "aqi": 452.1,
+    "recent_aqi": 242.1,
+    "min_aqi": 48.0,
+    "max_aqi": 2049.0,
+    "category": "Severe",
+    "color": "#881337",
+    "risk_level": "Critical / Emergency",
+    "health_advisory": "Severe respiratory emergency! Healthy people experience throat and lung irritation; stay indoors.",
+    "pollution_rate_label": "Hazardous Pollution Disaster",
+    "dominant_pollutant": "CO",
+    "dominant_pollutant_ratio": 1109.5,
+    "pollutants": {
+      "PM2.5": {
+        "value": 67.9,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 113.2,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "PM10": {
+        "value": 114.6,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 114.6,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "NO2": {
+        "value": 59.0,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 73.8,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "CO": {
+        "value": 22.19,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 1109.5,
+        "status": "Critical Hazard",
+        "statusColor": "#ef4444"
+      },
+      "SO2": {
+        "value": 55.3,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 69.1,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "O3": {
+        "value": 39.2,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 39.2,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 0.1,
+      "Satisfactory": 3.2,
+      "Moderate": 14.8,
+      "Poor": 17.8,
+      "Very Poor": 16.2,
+      "Severe": 47.8
+    },
+    "total_observations": 2009,
+    "valid_aqi_observations": 1334,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 584.4
+      },
+      {
+        "month": "Feb",
+        "aqi": 637.3
+      },
+      {
+        "month": "Mar",
+        "aqi": 524.3
+      },
+      {
+        "month": "Apr",
+        "aqi": 403.0
+      },
+      {
+        "month": "May",
+        "aqi": 275.8
+      },
+      {
+        "month": "Jun",
+        "aqi": 285.0
+      },
+      {
+        "month": "Jul",
+        "aqi": 364.7
+      },
+      {
+        "month": "Aug",
+        "aqi": 382.6
+      },
+      {
+        "month": "Sep",
+        "aqi": 377.0
+      },
+      {
+        "month": "Oct",
+        "aqi": 528.2
+      },
+      {
+        "month": "Nov",
+        "aqi": 690.5
+      },
+      {
+        "month": "Dec",
+        "aqi": 443.6
+      }
+    ],
+    "rank": 1
+  },
+  {
+    "id": "delhi",
+    "city": "Delhi",
+    "state": "National Capital Region",
+    "region": "North",
+    "description": "National capital territory subject to seasonal winter inversions.",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "aqi": 259.5,
+    "recent_aqi": 181.7,
+    "min_aqi": 29.0,
+    "max_aqi": 716.0,
+    "category": "Poor",
+    "color": "#f97316",
+    "risk_level": "High Risk",
+    "health_advisory": "Breathing discomfort to most people on prolonged exposure; avoid strenuous outdoor workouts.",
+    "pollution_rate_label": "High Pollution Rate",
+    "dominant_pollutant": "PM10",
+    "dominant_pollutant_ratio": 232.8,
+    "pollutants": {
+      "PM2.5": {
+        "value": 117.2,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 195.3,
+        "status": "Unhealthy (Severe)",
+        "statusColor": "#f97316"
+      },
+      "PM10": {
+        "value": 232.8,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 232.8,
+        "status": "Unhealthy (Severe)",
+        "statusColor": "#f97316"
+      },
+      "NO2": {
+        "value": 50.8,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 63.5,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "CO": {
+        "value": 1.98,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 99.0,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "SO2": {
+        "value": 15.9,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 19.9,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 51.3,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 51.3,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 1.1,
+      "Satisfactory": 7.9,
+      "Moderate": 26.0,
+      "Poor": 27.1,
+      "Very Poor": 26.0,
+      "Severe": 12.0
+    },
+    "total_observations": 2009,
+    "valid_aqi_observations": 1999,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 360.4
+      },
+      {
+        "month": "Feb",
+        "aqi": 298.8
+      },
+      {
+        "month": "Mar",
+        "aqi": 222.6
+      },
+      {
+        "month": "Apr",
+        "aqi": 248.4
+      },
+      {
+        "month": "May",
+        "aqi": 258.7
+      },
+      {
+        "month": "Jun",
+        "aqi": 199.4
+      },
+      {
+        "month": "Jul",
+        "aqi": 137.6
+      },
+      {
+        "month": "Aug",
+        "aqi": 134.4
+      },
+      {
+        "month": "Sep",
+        "aqi": 157.4
+      },
+      {
+        "month": "Oct",
+        "aqi": 312.3
+      },
+      {
+        "month": "Nov",
+        "aqi": 402.0
+      },
+      {
+        "month": "Dec",
+        "aqi": 371.2
+      }
+    ],
+    "rank": 2
+  },
+  {
+    "id": "patna",
+    "city": "Patna",
+    "state": "Bihar",
+    "region": "East",
+    "description": "Capital city along the Ganges with high winter particulate retention.",
+    "lat": 25.5941,
+    "lng": 85.1376,
+    "aqi": 240.8,
+    "recent_aqi": 162.3,
+    "min_aqi": 53.0,
+    "max_aqi": 619.0,
+    "category": "Poor",
+    "color": "#f97316",
+    "risk_level": "High Risk",
+    "health_advisory": "Breathing discomfort to most people on prolonged exposure; avoid strenuous outdoor workouts.",
+    "pollution_rate_label": "High Pollution Rate",
+    "dominant_pollutant": "PM2.5",
+    "dominant_pollutant_ratio": 205.8,
+    "pollutants": {
+      "PM2.5": {
+        "value": 123.5,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 205.8,
+        "status": "Unhealthy (Severe)",
+        "statusColor": "#f97316"
+      },
+      "PM10": {
+        "value": 126.7,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 126.7,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "NO2": {
+        "value": 37.5,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 46.9,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 1.53,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 76.5,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "SO2": {
+        "value": 22.1,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 27.6,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 37.2,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 37.2,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 0,
+      "Satisfactory": 11.7,
+      "Moderate": 34.7,
+      "Poor": 16.2,
+      "Very Poor": 25.4,
+      "Severe": 11.9
+    },
+    "total_observations": 1858,
+    "valid_aqi_observations": 1459,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 366.3
+      },
+      {
+        "month": "Feb",
+        "aqi": 283.8
+      },
+      {
+        "month": "Mar",
+        "aqi": 228.6
+      },
+      {
+        "month": "Apr",
+        "aqi": 175.5
+      },
+      {
+        "month": "May",
+        "aqi": 167.0
+      },
+      {
+        "month": "Jun",
+        "aqi": 127.4
+      },
+      {
+        "month": "Jul",
+        "aqi": 101.3
+      },
+      {
+        "month": "Aug",
+        "aqi": 113.0
+      },
+      {
+        "month": "Sep",
+        "aqi": 125.0
+      },
+      {
+        "month": "Oct",
+        "aqi": 238.4
+      },
+      {
+        "month": "Nov",
+        "aqi": 369.6
+      },
+      {
+        "month": "Dec",
+        "aqi": 396.0
+      }
+    ],
+    "rank": 3
+  },
+  {
+    "id": "gurugram",
+    "city": "Gurugram",
+    "state": "Haryana",
+    "region": "North",
+    "description": "Financial technology and corporate powerhouse in NCR.",
+    "lat": 28.4595,
+    "lng": 77.0266,
+    "aqi": 225.1,
+    "recent_aqi": 158.7,
+    "min_aqi": 38.0,
+    "max_aqi": 891.0,
+    "category": "Poor",
+    "color": "#f97316",
+    "risk_level": "High Risk",
+    "health_advisory": "Breathing discomfort to most people on prolonged exposure; avoid strenuous outdoor workouts.",
+    "pollution_rate_label": "High Pollution Rate",
+    "dominant_pollutant": "PM2.5",
+    "dominant_pollutant_ratio": 195.2,
+    "pollutants": {
+      "PM2.5": {
+        "value": 117.1,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 195.2,
+        "status": "Unhealthy (Severe)",
+        "statusColor": "#f97316"
+      },
+      "PM10": {
+        "value": 191.5,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 191.5,
+        "status": "Unhealthy (Severe)",
+        "statusColor": "#f97316"
+      },
+      "NO2": {
+        "value": 23.4,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 29.2,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 1.26,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 63.0,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "SO2": {
+        "value": 9.4,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 11.8,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 34.4,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 34.4,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 1.4,
+      "Satisfactory": 15.5,
+      "Moderate": 31.2,
+      "Poor": 21.3,
+      "Very Poor": 24.0,
+      "Severe": 6.5
+    },
+    "total_observations": 1679,
+    "valid_aqi_observations": 1453,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 311.4
+      },
+      {
+        "month": "Feb",
+        "aqi": 244.9
+      },
+      {
+        "month": "Mar",
+        "aqi": 187.6
+      },
+      {
+        "month": "Apr",
+        "aqi": 215.8
+      },
+      {
+        "month": "May",
+        "aqi": 220.1
+      },
+      {
+        "month": "Jun",
+        "aqi": 224.6
+      },
+      {
+        "month": "Jul",
+        "aqi": 148.1
+      },
+      {
+        "month": "Aug",
+        "aqi": 107.1
+      },
+      {
+        "month": "Sep",
+        "aqi": 119.0
+      },
+      {
+        "month": "Oct",
+        "aqi": 243.8
+      },
+      {
+        "month": "Nov",
+        "aqi": 338.9
+      },
+      {
+        "month": "Dec",
+        "aqi": 313.2
+      }
+    ],
+    "rank": 4
+  },
+  {
+    "id": "lucknow",
+    "city": "Lucknow",
+    "state": "Uttar Pradesh",
+    "region": "North",
+    "description": "Capital of Uttar Pradesh situated in the dense Gangetic plain.",
+    "lat": 26.8467,
+    "lng": 80.9462,
+    "aqi": 218.0,
+    "recent_aqi": 157.1,
+    "min_aqi": 39.0,
+    "max_aqi": 707.0,
+    "category": "Poor",
+    "color": "#f97316",
+    "risk_level": "High Risk",
+    "health_advisory": "Breathing discomfort to most people on prolonged exposure; avoid strenuous outdoor workouts.",
+    "pollution_rate_label": "High Pollution Rate",
+    "dominant_pollutant": "PM2.5",
+    "dominant_pollutant_ratio": 182.8,
+    "pollutants": {
+      "PM2.5": {
+        "value": 109.7,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 182.8,
+        "status": "Unhealthy (Severe)",
+        "statusColor": "#f97316"
+      },
+      "PM10": {
+        "value": 95.7,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 95.7,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "NO2": {
+        "value": 33.2,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 41.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 2.13,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 106.5,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "SO2": {
+        "value": 9.9,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 12.4,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 36.9,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 36.9,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 0.8,
+      "Satisfactory": 19.3,
+      "Moderate": 30.5,
+      "Poor": 18.6,
+      "Very Poor": 25.0,
+      "Severe": 5.8
+    },
+    "total_observations": 2009,
+    "valid_aqi_observations": 1893,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 331.8
+      },
+      {
+        "month": "Feb",
+        "aqi": 279.1
+      },
+      {
+        "month": "Mar",
+        "aqi": 214.1
+      },
+      {
+        "month": "Apr",
+        "aqi": 185.7
+      },
+      {
+        "month": "May",
+        "aqi": 190.9
+      },
+      {
+        "month": "Jun",
+        "aqi": 152.9
+      },
+      {
+        "month": "Jul",
+        "aqi": 101.6
+      },
+      {
+        "month": "Aug",
+        "aqi": 97.8
+      },
+      {
+        "month": "Sep",
+        "aqi": 105.3
+      },
+      {
+        "month": "Oct",
+        "aqi": 242.9
+      },
+      {
+        "month": "Nov",
+        "aqi": 369.5
+      },
+      {
+        "month": "Dec",
+        "aqi": 357.7
+      }
+    ],
+    "rank": 5
+  },
+  {
+    "id": "talcher",
+    "city": "Talcher",
+    "state": "Odisha",
+    "region": "East",
+    "description": "Coal city hosting major open-cast mines and thermal plants.",
+    "lat": 20.95,
+    "lng": 85.22,
+    "aqi": 172.9,
+    "recent_aqi": 160.7,
+    "min_aqi": 13.0,
+    "max_aqi": 570.0,
+    "category": "Moderate",
+    "color": "#f59e0b",
+    "risk_level": "Moderate Risk",
+    "health_advisory": "Breathing discomfort to people with lung disease, asthma, and heart conditions upon exertion.",
+    "pollution_rate_label": "Moderate Pollution Rate",
+    "dominant_pollutant": "PM10",
+    "dominant_pollutant_ratio": 165.8,
+    "pollutants": {
+      "PM2.5": {
+        "value": 61.4,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 102.3,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "PM10": {
+        "value": 165.8,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 165.8,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "NO2": {
+        "value": 13.8,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 17.2,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 1.85,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 92.5,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "SO2": {
+        "value": 28.5,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 35.6,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 17.2,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 17.2,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 2.7,
+      "Satisfactory": 21.5,
+      "Moderate": 46.4,
+      "Poor": 12.0,
+      "Very Poor": 13.9,
+      "Severe": 3.4
+    },
+    "total_observations": 925,
+    "valid_aqi_observations": 698,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 295.3
+      },
+      {
+        "month": "Feb",
+        "aqi": 280.4
+      },
+      {
+        "month": "Mar",
+        "aqi": 198.3
+      },
+      {
+        "month": "Apr",
+        "aqi": 137.9
+      },
+      {
+        "month": "May",
+        "aqi": 115.6
+      },
+      {
+        "month": "Jun",
+        "aqi": 105.6
+      },
+      {
+        "month": "Jul",
+        "aqi": 104.6
+      },
+      {
+        "month": "Aug",
+        "aqi": 103.8
+      },
+      {
+        "month": "Sep",
+        "aqi": 56.7
+      },
+      {
+        "month": "Oct",
+        "aqi": 86.9
+      },
+      {
+        "month": "Nov",
+        "aqi": 265.2
+      },
+      {
+        "month": "Dec",
+        "aqi": 258.3
+      }
+    ],
+    "rank": 6
+  },
+  {
+    "id": "jorapokhar",
+    "city": "Jorapokhar",
+    "state": "Jharkhand",
+    "region": "East",
+    "description": "Coal mining belt and industrial settlement in Dhanbad district.",
+    "lat": 23.7088,
+    "lng": 86.4137,
+    "aqi": 159.3,
+    "recent_aqi": 145.3,
+    "min_aqi": 27.0,
+    "max_aqi": 604.0,
+    "category": "Moderate",
+    "color": "#f59e0b",
+    "risk_level": "Moderate Risk",
+    "health_advisory": "Breathing discomfort to people with lung disease, asthma, and heart conditions upon exertion.",
+    "pollution_rate_label": "Moderate Pollution Rate",
+    "dominant_pollutant": "PM10",
+    "dominant_pollutant_ratio": 149.7,
+    "pollutants": {
+      "PM2.5": {
+        "value": 64.2,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 107.0,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "PM10": {
+        "value": 149.7,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 149.7,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "NO2": {
+        "value": 9.3,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 11.6,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 0.66,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 33.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "SO2": {
+        "value": 33.6,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 42.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 32.4,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 32.4,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 1.3,
+      "Satisfactory": 17.8,
+      "Moderate": 58.5,
+      "Poor": 15.7,
+      "Very Poor": 4.4,
+      "Severe": 2.3
+    },
+    "total_observations": 1169,
+    "valid_aqi_observations": 771,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 216.8
+      },
+      {
+        "month": "Feb",
+        "aqi": 171.9
+      },
+      {
+        "month": "Mar",
+        "aqi": 155.2
+      },
+      {
+        "month": "Apr",
+        "aqi": 124.0
+      },
+      {
+        "month": "May",
+        "aqi": 128.0
+      },
+      {
+        "month": "Jun",
+        "aqi": 127.7
+      },
+      {
+        "month": "Jul",
+        "aqi": 88.0
+      },
+      {
+        "month": "Aug",
+        "aqi": 112.6
+      },
+      {
+        "month": "Sep",
+        "aqi": 84.7
+      },
+      {
+        "month": "Oct",
+        "aqi": 165.7
+      },
+      {
+        "month": "Nov",
+        "aqi": 260.3
+      },
+      {
+        "month": "Dec",
+        "aqi": 241.5
+      }
+    ],
+    "rank": 7
+  },
+  {
+    "id": "brajrajnagar",
+    "city": "Brajrajnagar",
+    "state": "Odisha",
+    "region": "East",
+    "description": "Industrial town with paper mills and coal mining zones.",
+    "lat": 21.8294,
+    "lng": 83.9213,
+    "aqi": 150.3,
+    "recent_aqi": 137.1,
+    "min_aqi": 22.0,
+    "max_aqi": 355.0,
+    "category": "Moderate",
+    "color": "#f59e0b",
+    "risk_level": "Moderate Risk",
+    "health_advisory": "Breathing discomfort to people with lung disease, asthma, and heart conditions upon exertion.",
+    "pollution_rate_label": "Moderate Pollution Rate",
+    "dominant_pollutant": "PM10",
+    "dominant_pollutant_ratio": 124.2,
+    "pollutants": {
+      "PM2.5": {
+        "value": 64.1,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 106.8,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "PM10": {
+        "value": 124.2,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 124.2,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "NO2": {
+        "value": 16.5,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 20.6,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 1.8,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 90.0,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "SO2": {
+        "value": 9.8,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 12.3,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 16.6,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 16.6,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 2.0,
+      "Satisfactory": 17.1,
+      "Moderate": 59.0,
+      "Poor": 16.8,
+      "Very Poor": 5.0,
+      "Severe": 0
+    },
+    "total_observations": 938,
+    "valid_aqi_observations": 713,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 211.3
+      },
+      {
+        "month": "Feb",
+        "aqi": 190.0
+      },
+      {
+        "month": "Mar",
+        "aqi": 202.7
+      },
+      {
+        "month": "Apr",
+        "aqi": 152.5
+      },
+      {
+        "month": "May",
+        "aqi": 127.4
+      },
+      {
+        "month": "Jun",
+        "aqi": 110.6
+      },
+      {
+        "month": "Jul",
+        "aqi": 90.4
+      },
+      {
+        "month": "Aug",
+        "aqi": 84.1
+      },
+      {
+        "month": "Sep",
+        "aqi": 95.0
+      },
+      {
+        "month": "Oct",
+        "aqi": 106.6
+      },
+      {
+        "month": "Nov",
+        "aqi": 169.0
+      },
+      {
+        "month": "Dec",
+        "aqi": 183.0
+      }
+    ],
+    "rank": 8
+  },
+  {
+    "id": "kolkata",
+    "city": "Kolkata",
+    "state": "West Bengal",
+    "region": "East",
+    "description": "Historic eastern metropolis on the Hooghly River bank.",
+    "lat": 22.5726,
+    "lng": 88.3639,
+    "aqi": 140.6,
+    "recent_aqi": 117.3,
+    "min_aqi": 26.0,
+    "max_aqi": 475.0,
+    "category": "Moderate",
+    "color": "#f59e0b",
+    "risk_level": "Moderate Risk",
+    "health_advisory": "Breathing discomfort to people with lung disease, asthma, and heart conditions upon exertion.",
+    "pollution_rate_label": "Moderate Pollution Rate",
+    "dominant_pollutant": "PM10",
+    "dominant_pollutant_ratio": 115.6,
+    "pollutants": {
+      "PM2.5": {
+        "value": 64.4,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 107.3,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "PM10": {
+        "value": 115.6,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 115.6,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "NO2": {
+        "value": 40.4,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 50.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 0.8,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 40.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "SO2": {
+        "value": 8.4,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 10.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 30.7,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 30.7,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 15.8,
+      "Satisfactory": 37.8,
+      "Moderate": 20.2,
+      "Poor": 15.8,
+      "Very Poor": 8.8,
+      "Severe": 1.7
+    },
+    "total_observations": 814,
+    "valid_aqi_observations": 754,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 288.9
+      },
+      {
+        "month": "Feb",
+        "aqi": 231.3
+      },
+      {
+        "month": "Mar",
+        "aqi": 140.3
+      },
+      {
+        "month": "Apr",
+        "aqi": 78.5
+      },
+      {
+        "month": "May",
+        "aqi": 70.9
+      },
+      {
+        "month": "Jun",
+        "aqi": 62.3
+      },
+      {
+        "month": "Jul",
+        "aqi": 56.6
+      },
+      {
+        "month": "Aug",
+        "aqi": 62.2
+      },
+      {
+        "month": "Sep",
+        "aqi": 64.7
+      },
+      {
+        "month": "Oct",
+        "aqi": 144.3
+      },
+      {
+        "month": "Nov",
+        "aqi": 244.3
+      },
+      {
+        "month": "Dec",
+        "aqi": 273.6
+      }
+    ],
+    "rank": 9
+  },
+  {
+    "id": "guwahati",
+    "city": "Guwahati",
+    "state": "Assam",
+    "region": "Northeast",
+    "description": "Gateway city of Northeast India alongside the Brahmaputra River.",
+    "lat": 26.1445,
+    "lng": 91.7362,
+    "aqi": 140.1,
+    "recent_aqi": 161.5,
+    "min_aqi": 25.0,
+    "max_aqi": 956.0,
+    "category": "Moderate",
+    "color": "#f59e0b",
+    "risk_level": "Moderate Risk",
+    "health_advisory": "Breathing discomfort to people with lung disease, asthma, and heart conditions upon exertion.",
+    "pollution_rate_label": "Moderate Pollution Rate",
+    "dominant_pollutant": "PM10",
+    "dominant_pollutant_ratio": 116.6,
+    "pollutants": {
+      "PM2.5": {
+        "value": 63.7,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 106.2,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "PM10": {
+        "value": 116.6,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 116.6,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "NO2": {
+        "value": 13.6,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 17.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 0.74,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 37.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "SO2": {
+        "value": 14.7,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 18.4,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 25.1,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 25.1,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 23.4,
+      "Satisfactory": 27.3,
+      "Moderate": 22.4,
+      "Poor": 13.9,
+      "Very Poor": 11.9,
+      "Severe": 1.0
+    },
+    "total_observations": 502,
+    "valid_aqi_observations": 495,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 291.6
+      },
+      {
+        "month": "Feb",
+        "aqi": 239.7
+      },
+      {
+        "month": "Mar",
+        "aqi": 208.5
+      },
+      {
+        "month": "Apr",
+        "aqi": 116.9
+      },
+      {
+        "month": "May",
+        "aqi": 80.8
+      },
+      {
+        "month": "Jun",
+        "aqi": 49.6
+      },
+      {
+        "month": "Jul",
+        "aqi": 74.5
+      },
+      {
+        "month": "Aug",
+        "aqi": 121.0
+      },
+      {
+        "month": "Sep",
+        "aqi": 48.2
+      },
+      {
+        "month": "Oct",
+        "aqi": 99.2
+      },
+      {
+        "month": "Nov",
+        "aqi": 140.4
+      },
+      {
+        "month": "Dec",
+        "aqi": 268.9
+      }
+    ],
+    "rank": 10
+  },
+  {
+    "id": "jaipur",
+    "city": "Jaipur",
+    "state": "Rajasthan",
+    "region": "Northwest",
+    "description": "The Pink City on the periphery of the Thar Desert.",
+    "lat": 26.9124,
+    "lng": 75.7873,
+    "aqi": 133.7,
+    "recent_aqi": 105.1,
+    "min_aqi": 43.0,
+    "max_aqi": 457.0,
+    "category": "Moderate",
+    "color": "#f59e0b",
+    "risk_level": "Moderate Risk",
+    "health_advisory": "Breathing discomfort to people with lung disease, asthma, and heart conditions upon exertion.",
+    "pollution_rate_label": "Moderate Pollution Rate",
+    "dominant_pollutant": "PM10",
+    "dominant_pollutant_ratio": 123.5,
+    "pollutants": {
+      "PM2.5": {
+        "value": 54.5,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 90.8,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "PM10": {
+        "value": 123.5,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 123.5,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "NO2": {
+        "value": 32.4,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 40.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 0.8,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 40.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "SO2": {
+        "value": 11.1,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 13.9,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 46.7,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 46.7,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 0.4,
+      "Satisfactory": 29.0,
+      "Moderate": 59.5,
+      "Poor": 10.1,
+      "Very Poor": 0.9,
+      "Severe": 0.2
+    },
+    "total_observations": 1114,
+    "valid_aqi_observations": 1094,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 151.0
+      },
+      {
+        "month": "Feb",
+        "aqi": 142.7
+      },
+      {
+        "month": "Mar",
+        "aqi": 110.6
+      },
+      {
+        "month": "Apr",
+        "aqi": 131.2
+      },
+      {
+        "month": "May",
+        "aqi": 142.5
+      },
+      {
+        "month": "Jun",
+        "aqi": 123.5
+      },
+      {
+        "month": "Jul",
+        "aqi": 93.3
+      },
+      {
+        "month": "Aug",
+        "aqi": 92.5
+      },
+      {
+        "month": "Sep",
+        "aqi": 100.2
+      },
+      {
+        "month": "Oct",
+        "aqi": 166.2
+      },
+      {
+        "month": "Nov",
+        "aqi": 193.6
+      },
+      {
+        "month": "Dec",
+        "aqi": 154.4
+      }
+    ],
+    "rank": 11
+  },
+  {
+    "id": "bhopal",
+    "city": "Bhopal",
+    "state": "Madhya Pradesh",
+    "region": "Central",
+    "description": "City of Lakes and capital of central state Madhya Pradesh.",
+    "lat": 23.2599,
+    "lng": 77.4126,
+    "aqi": 132.8,
+    "recent_aqi": 114.8,
+    "min_aqi": 37.0,
+    "max_aqi": 312.0,
+    "category": "Moderate",
+    "color": "#f59e0b",
+    "risk_level": "Moderate Risk",
+    "health_advisory": "Breathing discomfort to people with lung disease, asthma, and heart conditions upon exertion.",
+    "pollution_rate_label": "Moderate Pollution Rate",
+    "dominant_pollutant": "PM10",
+    "dominant_pollutant_ratio": 119.3,
+    "pollutants": {
+      "PM2.5": {
+        "value": 50.1,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 83.5,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "PM10": {
+        "value": 119.3,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 119.3,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "NO2": {
+        "value": 31.3,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 39.1,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 0.88,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 44.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "SO2": {
+        "value": 13.1,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 16.4,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 59.9,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 59.9,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 0.7,
+      "Satisfactory": 27.3,
+      "Moderate": 59.4,
+      "Poor": 11.2,
+      "Very Poor": 1.4,
+      "Severe": 0
+    },
+    "total_observations": 289,
+    "valid_aqi_observations": 278,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 160.5
+      },
+      {
+        "month": "Feb",
+        "aqi": 128.6
+      },
+      {
+        "month": "Mar",
+        "aqi": 109.7
+      },
+      {
+        "month": "Apr",
+        "aqi": 113.8
+      },
+      {
+        "month": "May",
+        "aqi": 104.5
+      },
+      {
+        "month": "Jun",
+        "aqi": 71.7
+      },
+      {
+        "month": "Jul",
+        "aqi": 69.0
+      },
+      {
+        "month": "Aug",
+        "aqi": 132.8
+      },
+      {
+        "month": "Sep",
+        "aqi": 73.8
+      },
+      {
+        "month": "Oct",
+        "aqi": 135.3
+      },
+      {
+        "month": "Nov",
+        "aqi": 205.6
+      },
+      {
+        "month": "Dec",
+        "aqi": 185.5
+      }
+    ],
+    "rank": 12
+  },
+  {
+    "id": "amritsar",
+    "city": "Amritsar",
+    "state": "Punjab",
+    "region": "North",
+    "description": "Historic cultural center in northern agricultural belt.",
+    "lat": 31.634,
+    "lng": 74.8723,
+    "aqi": 119.9,
+    "recent_aqi": 93.0,
+    "min_aqi": 20.0,
+    "max_aqi": 869.0,
+    "category": "Moderate",
+    "color": "#f59e0b",
+    "risk_level": "Moderate Risk",
+    "health_advisory": "Breathing discomfort to people with lung disease, asthma, and heart conditions upon exertion.",
+    "pollution_rate_label": "Moderate Pollution Rate",
+    "dominant_pollutant": "PM10",
+    "dominant_pollutant_ratio": 115.2,
+    "pollutants": {
+      "PM2.5": {
+        "value": 55.5,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 92.5,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "PM10": {
+        "value": 115.2,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 115.2,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "NO2": {
+        "value": 18.5,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 23.1,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 0.55,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 27.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "SO2": {
+        "value": 8.1,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 10.1,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 22.4,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 22.4,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 7.5,
+      "Satisfactory": 42.0,
+      "Moderate": 39.8,
+      "Poor": 6.0,
+      "Very Poor": 4.2,
+      "Severe": 0.6
+    },
+    "total_observations": 1221,
+    "valid_aqi_observations": 1126,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 119.8
+      },
+      {
+        "month": "Feb",
+        "aqi": 116.7
+      },
+      {
+        "month": "Mar",
+        "aqi": 93.8
+      },
+      {
+        "month": "Apr",
+        "aqi": 87.8
+      },
+      {
+        "month": "May",
+        "aqi": 114.6
+      },
+      {
+        "month": "Jun",
+        "aqi": 127.5
+      },
+      {
+        "month": "Jul",
+        "aqi": 79.8
+      },
+      {
+        "month": "Aug",
+        "aqi": 74.9
+      },
+      {
+        "month": "Sep",
+        "aqi": 96.6
+      },
+      {
+        "month": "Oct",
+        "aqi": 169.6
+      },
+      {
+        "month": "Nov",
+        "aqi": 206.8
+      },
+      {
+        "month": "Dec",
+        "aqi": 161.6
+      }
+    ],
+    "rank": 13
+  },
+  {
+    "id": "visakhapatnam",
+    "city": "Visakhapatnam",
+    "state": "Andhra Pradesh",
+    "region": "South",
+    "description": "Major deepwater port and coastal steel manufacturing center.",
+    "lat": 17.6868,
+    "lng": 83.2185,
+    "aqi": 117.3,
+    "recent_aqi": 84.7,
+    "min_aqi": 23.0,
+    "max_aqi": 387.0,
+    "category": "Moderate",
+    "color": "#f59e0b",
+    "risk_level": "Moderate Risk",
+    "health_advisory": "Breathing discomfort to people with lung disease, asthma, and heart conditions upon exertion.",
+    "pollution_rate_label": "Moderate Pollution Rate",
+    "dominant_pollutant": "PM10",
+    "dominant_pollutant_ratio": 106.0,
+    "pollutants": {
+      "PM2.5": {
+        "value": 47.0,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 78.3,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "PM10": {
+        "value": 106.0,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 106.0,
+        "status": "Elevated (Exceeds Limit)",
+        "statusColor": "#f59e0b"
+      },
+      "NO2": {
+        "value": 37.2,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 46.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 0.74,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 37.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "SO2": {
+        "value": 12.7,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 15.9,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 37.5,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 37.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 4.4,
+      "Satisfactory": 38.2,
+      "Moderate": 49.5,
+      "Poor": 6.3,
+      "Very Poor": 1.5,
+      "Severe": 0
+    },
+    "total_observations": 1462,
+    "valid_aqi_observations": 1171,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 187.0
+      },
+      {
+        "month": "Feb",
+        "aqi": 143.7
+      },
+      {
+        "month": "Mar",
+        "aqi": 103.9
+      },
+      {
+        "month": "Apr",
+        "aqi": 79.9
+      },
+      {
+        "month": "May",
+        "aqi": 89.1
+      },
+      {
+        "month": "Jun",
+        "aqi": 95.8
+      },
+      {
+        "month": "Jul",
+        "aqi": 94.2
+      },
+      {
+        "month": "Aug",
+        "aqi": 93.0
+      },
+      {
+        "month": "Sep",
+        "aqi": 93.7
+      },
+      {
+        "month": "Oct",
+        "aqi": 116.9
+      },
+      {
+        "month": "Nov",
+        "aqi": 124.6
+      },
+      {
+        "month": "Dec",
+        "aqi": 145.1
+      }
+    ],
+    "rank": 14
+  },
+  {
+    "id": "chennai",
+    "city": "Chennai",
+    "state": "Tamil Nadu",
+    "region": "South",
+    "description": "Coastal metropolis with major automotive and port commerce.",
+    "lat": 13.0827,
+    "lng": 80.2707,
+    "aqi": 114.5,
+    "recent_aqi": 80.3,
+    "min_aqi": 30.0,
+    "max_aqi": 449.0,
+    "category": "Moderate",
+    "color": "#f59e0b",
+    "risk_level": "Moderate Risk",
+    "health_advisory": "Breathing discomfort to people with lung disease, asthma, and heart conditions upon exertion.",
+    "pollution_rate_label": "Moderate Pollution Rate",
+    "dominant_pollutant": "PM2.5",
+    "dominant_pollutant_ratio": 84.0,
+    "pollutants": {
+      "PM2.5": {
+        "value": 50.4,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 84.0,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "PM10": {
+        "value": 62.8,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 62.8,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "NO2": {
+        "value": 16.9,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 21.1,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 1.07,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 53.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "SO2": {
+        "value": 7.9,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 9.9,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 32.4,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 32.4,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 0.6,
+      "Satisfactory": 49.9,
+      "Moderate": 42.7,
+      "Poor": 5.8,
+      "Very Poor": 0.6,
+      "Severe": 0.3
+    },
+    "total_observations": 2009,
+    "valid_aqi_observations": 1884,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 128.1
+      },
+      {
+        "month": "Feb",
+        "aqi": 117.6
+      },
+      {
+        "month": "Mar",
+        "aqi": 117.2
+      },
+      {
+        "month": "Apr",
+        "aqi": 105.4
+      },
+      {
+        "month": "May",
+        "aqi": 115.3
+      },
+      {
+        "month": "Jun",
+        "aqi": 107.8
+      },
+      {
+        "month": "Jul",
+        "aqi": 108.2
+      },
+      {
+        "month": "Aug",
+        "aqi": 105.2
+      },
+      {
+        "month": "Sep",
+        "aqi": 118.8
+      },
+      {
+        "month": "Oct",
+        "aqi": 121.0
+      },
+      {
+        "month": "Nov",
+        "aqi": 118.9
+      },
+      {
+        "month": "Dec",
+        "aqi": 112.2
+      }
+    ],
+    "rank": 15
+  },
+  {
+    "id": "hyderabad",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "region": "South",
+    "description": "Historic tech powerhouse and pharmaceutical production center.",
+    "lat": 17.385,
+    "lng": 78.4867,
+    "aqi": 109.2,
+    "recent_aqi": 78.2,
+    "min_aqi": 22.0,
+    "max_aqi": 737.0,
+    "category": "Moderate",
+    "color": "#f59e0b",
+    "risk_level": "Moderate Risk",
+    "health_advisory": "Breathing discomfort to people with lung disease, asthma, and heart conditions upon exertion.",
+    "pollution_rate_label": "Moderate Pollution Rate",
+    "dominant_pollutant": "PM10",
+    "dominant_pollutant_ratio": 91.9,
+    "pollutants": {
+      "PM2.5": {
+        "value": 47.0,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 78.3,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "PM10": {
+        "value": 91.9,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 91.9,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "NO2": {
+        "value": 28.4,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 35.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 0.59,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 29.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "SO2": {
+        "value": 9.2,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 11.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 33.6,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 33.6,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 7.5,
+      "Satisfactory": 37.8,
+      "Moderate": 51.0,
+      "Poor": 2.9,
+      "Very Poor": 0.5,
+      "Severe": 0.4
+    },
+    "total_observations": 2006,
+    "valid_aqi_observations": 1880,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 140.2
+      },
+      {
+        "month": "Feb",
+        "aqi": 123.7
+      },
+      {
+        "month": "Mar",
+        "aqi": 110.3
+      },
+      {
+        "month": "Apr",
+        "aqi": 108.5
+      },
+      {
+        "month": "May",
+        "aqi": 107.1
+      },
+      {
+        "month": "Jun",
+        "aqi": 91.0
+      },
+      {
+        "month": "Jul",
+        "aqi": 79.5
+      },
+      {
+        "month": "Aug",
+        "aqi": 81.6
+      },
+      {
+        "month": "Sep",
+        "aqi": 88.9
+      },
+      {
+        "month": "Oct",
+        "aqi": 125.2
+      },
+      {
+        "month": "Nov",
+        "aqi": 126.7
+      },
+      {
+        "month": "Dec",
+        "aqi": 129.1
+      }
+    ],
+    "rank": 16
+  },
+  {
+    "id": "mumbai",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "region": "West",
+    "description": "Coastal financial mega-metropolis on the Arabian Sea.",
+    "lat": 19.076,
+    "lng": 72.8777,
+    "aqi": 105.4,
+    "recent_aqi": 103.6,
+    "min_aqi": 40.0,
+    "max_aqi": 307.0,
+    "category": "Moderate",
+    "color": "#f59e0b",
+    "risk_level": "Moderate Risk",
+    "health_advisory": "Breathing discomfort to people with lung disease, asthma, and heart conditions upon exertion.",
+    "pollution_rate_label": "Moderate Pollution Rate",
+    "dominant_pollutant": "PM10",
+    "dominant_pollutant_ratio": 96.7,
+    "pollutants": {
+      "PM2.5": {
+        "value": 35.2,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 58.7,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "PM10": {
+        "value": 96.7,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 96.7,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "NO2": {
+        "value": 25.6,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 32.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 0.57,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 28.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "SO2": {
+        "value": 15.2,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 19.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 33.1,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 33.1,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 3.4,
+      "Satisfactory": 55.2,
+      "Moderate": 36.8,
+      "Poor": 4.5,
+      "Very Poor": 0.1,
+      "Severe": 0
+    },
+    "total_observations": 2009,
+    "valid_aqi_observations": 775,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 167.1
+      },
+      {
+        "month": "Feb",
+        "aqi": 154.6
+      },
+      {
+        "month": "Mar",
+        "aqi": 114.1
+      },
+      {
+        "month": "Apr",
+        "aqi": 86.2
+      },
+      {
+        "month": "May",
+        "aqi": 77.1
+      },
+      {
+        "month": "Jun",
+        "aqi": 69.0
+      },
+      {
+        "month": "Jul",
+        "aqi": 67.0
+      },
+      {
+        "month": "Aug",
+        "aqi": 69.3
+      },
+      {
+        "month": "Sep",
+        "aqi": 72.7
+      },
+      {
+        "month": "Oct",
+        "aqi": 107.4
+      },
+      {
+        "month": "Nov",
+        "aqi": 145.2
+      },
+      {
+        "month": "Dec",
+        "aqi": 167.7
+      }
+    ],
+    "rank": 17
+  },
+  {
+    "id": "kochi",
+    "city": "Kochi",
+    "state": "Kerala",
+    "region": "South",
+    "description": "Coastal spice trade port with humid maritime tropical climate.",
+    "lat": 9.9312,
+    "lng": 76.2673,
+    "aqi": 104.3,
+    "recent_aqi": 104.3,
+    "min_aqi": 51.0,
+    "max_aqi": 277.0,
+    "category": "Moderate",
+    "color": "#f59e0b",
+    "risk_level": "Moderate Risk",
+    "health_advisory": "Breathing discomfort to people with lung disease, asthma, and heart conditions upon exertion.",
+    "pollution_rate_label": "Moderate Pollution Rate",
+    "dominant_pollutant": "PM10",
+    "dominant_pollutant_ratio": 67.3,
+    "pollutants": {
+      "PM2.5": {
+        "value": 31.4,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 52.3,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "PM10": {
+        "value": 67.3,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 67.3,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "NO2": {
+        "value": 14.9,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 18.6,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 1.3,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 65.0,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "SO2": {
+        "value": 17.6,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 22.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 3.8,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 3.8,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 0,
+      "Satisfactory": 51.9,
+      "Moderate": 46.8,
+      "Poor": 1.3,
+      "Very Poor": 0,
+      "Severe": 0
+    },
+    "total_observations": 162,
+    "valid_aqi_observations": 158,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 156.1
+      },
+      {
+        "month": "Feb",
+        "aqi": 121.1
+      },
+      {
+        "month": "Mar",
+        "aqi": 129.2
+      },
+      {
+        "month": "Apr",
+        "aqi": 77.0
+      },
+      {
+        "month": "May",
+        "aqi": 84.7
+      },
+      {
+        "month": "Jun",
+        "aqi": 93.9
+      },
+      {
+        "month": "Jul",
+        "aqi": 102.0
+      },
+      {
+        "month": "Aug",
+        "aqi": 104.3
+      },
+      {
+        "month": "Sep",
+        "aqi": 104.3
+      },
+      {
+        "month": "Oct",
+        "aqi": 104.3
+      },
+      {
+        "month": "Nov",
+        "aqi": 104.3
+      },
+      {
+        "month": "Dec",
+        "aqi": 104.3
+      }
+    ],
+    "rank": 18
+  },
+  {
+    "id": "chandigarh",
+    "city": "Chandigarh",
+    "state": "Chandigarh (UT)",
+    "region": "North",
+    "description": "Carefully planned modern union territory near the Shivalik foothills.",
+    "lat": 30.7333,
+    "lng": 76.7794,
+    "aqi": 96.5,
+    "recent_aqi": 71.4,
+    "min_aqi": 26.0,
+    "max_aqi": 335.0,
+    "category": "Satisfactory",
+    "color": "#84cc16",
+    "risk_level": "Low Risk",
+    "health_advisory": "Minor breathing discomfort may develop in extremely sensitive or asthmatic individuals.",
+    "pollution_rate_label": "Acceptable Air Quality",
+    "dominant_pollutant": "PM10",
+    "dominant_pollutant_ratio": 85.7,
+    "pollutants": {
+      "PM2.5": {
+        "value": 41.1,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 68.5,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "PM10": {
+        "value": 85.7,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 85.7,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "NO2": {
+        "value": 11.6,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 14.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 0.63,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 31.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "SO2": {
+        "value": 10.2,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 12.8,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 20.0,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 20.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 16.1,
+      "Satisfactory": 51.5,
+      "Moderate": 24.7,
+      "Poor": 6.7,
+      "Very Poor": 1.0,
+      "Severe": 0
+    },
+    "total_observations": 304,
+    "valid_aqi_observations": 299,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 94.1
+      },
+      {
+        "month": "Feb",
+        "aqi": 93.4
+      },
+      {
+        "month": "Mar",
+        "aqi": 55.4
+      },
+      {
+        "month": "Apr",
+        "aqi": 44.6
+      },
+      {
+        "month": "May",
+        "aqi": 74.1
+      },
+      {
+        "month": "Jun",
+        "aqi": 66.5
+      },
+      {
+        "month": "Jul",
+        "aqi": 66.0
+      },
+      {
+        "month": "Aug",
+        "aqi": 96.5
+      },
+      {
+        "month": "Sep",
+        "aqi": 85.2
+      },
+      {
+        "month": "Oct",
+        "aqi": 140.2
+      },
+      {
+        "month": "Nov",
+        "aqi": 168.5
+      },
+      {
+        "month": "Dec",
+        "aqi": 139.6
+      }
+    ],
+    "rank": 19
+  },
+  {
+    "id": "amaravati",
+    "city": "Amaravati",
+    "state": "Andhra Pradesh",
+    "region": "South",
+    "description": "Planned riverfront capital city in Andhra Pradesh.",
+    "lat": 16.5417,
+    "lng": 80.5158,
+    "aqi": 95.3,
+    "recent_aqi": 59.9,
+    "min_aqi": 24.0,
+    "max_aqi": 312.0,
+    "category": "Satisfactory",
+    "color": "#84cc16",
+    "risk_level": "Low Risk",
+    "health_advisory": "Minor breathing discomfort may develop in extremely sensitive or asthmatic individuals.",
+    "pollution_rate_label": "Acceptable Air Quality",
+    "dominant_pollutant": "PM10",
+    "dominant_pollutant_ratio": 76.4,
+    "pollutants": {
+      "PM2.5": {
+        "value": 37.8,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 63.0,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "PM10": {
+        "value": 76.4,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 76.4,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "NO2": {
+        "value": 22.2,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 27.7,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 0.63,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 31.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "SO2": {
+        "value": 14.3,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 17.9,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 38.1,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 38.1,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 18.8,
+      "Satisfactory": 48.6,
+      "Moderate": 26.0,
+      "Poor": 5.6,
+      "Very Poor": 1.0,
+      "Severe": 0
+    },
+    "total_observations": 951,
+    "valid_aqi_observations": 841,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 159.7
+      },
+      {
+        "month": "Feb",
+        "aqi": 95.9
+      },
+      {
+        "month": "Mar",
+        "aqi": 70.8
+      },
+      {
+        "month": "Apr",
+        "aqi": 59.4
+      },
+      {
+        "month": "May",
+        "aqi": 85.0
+      },
+      {
+        "month": "Jun",
+        "aqi": 68.1
+      },
+      {
+        "month": "Jul",
+        "aqi": 57.7
+      },
+      {
+        "month": "Aug",
+        "aqi": 60.9
+      },
+      {
+        "month": "Sep",
+        "aqi": 80.8
+      },
+      {
+        "month": "Oct",
+        "aqi": 79.3
+      },
+      {
+        "month": "Nov",
+        "aqi": 123.1
+      },
+      {
+        "month": "Dec",
+        "aqi": 160.5
+      }
+    ],
+    "rank": 20
+  },
+  {
+    "id": "bengaluru",
+    "city": "Bengaluru",
+    "state": "Karnataka",
+    "region": "South",
+    "description": "India's high-tech Silicon Valley on the Deccan Plateau.",
+    "lat": 12.9716,
+    "lng": 77.5946,
+    "aqi": 94.3,
+    "recent_aqi": 79.7,
+    "min_aqi": 20.0,
+    "max_aqi": 352.0,
+    "category": "Satisfactory",
+    "color": "#84cc16",
+    "risk_level": "Low Risk",
+    "health_advisory": "Minor breathing discomfort may develop in extremely sensitive or asthmatic individuals.",
+    "pollution_rate_label": "Acceptable Air Quality",
+    "dominant_pollutant": "CO",
+    "dominant_pollutant_ratio": 92.0,
+    "pollutants": {
+      "PM2.5": {
+        "value": 35.8,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 59.7,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "PM10": {
+        "value": 83.2,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 83.2,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "NO2": {
+        "value": 28.0,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 35.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 1.84,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 92.0,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "SO2": {
+        "value": 5.5,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 6.9,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 32.9,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 32.9,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 6.0,
+      "Satisfactory": 58.8,
+      "Moderate": 33.0,
+      "Poor": 1.9,
+      "Very Poor": 0.3,
+      "Severe": 0
+    },
+    "total_observations": 2009,
+    "valid_aqi_observations": 1910,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 111.7
+      },
+      {
+        "month": "Feb",
+        "aqi": 109.5
+      },
+      {
+        "month": "Mar",
+        "aqi": 108.3
+      },
+      {
+        "month": "Apr",
+        "aqi": 101.2
+      },
+      {
+        "month": "May",
+        "aqi": 84.7
+      },
+      {
+        "month": "Jun",
+        "aqi": 71.8
+      },
+      {
+        "month": "Jul",
+        "aqi": 94.0
+      },
+      {
+        "month": "Aug",
+        "aqi": 81.7
+      },
+      {
+        "month": "Sep",
+        "aqi": 78.5
+      },
+      {
+        "month": "Oct",
+        "aqi": 97.5
+      },
+      {
+        "month": "Nov",
+        "aqi": 94.5
+      },
+      {
+        "month": "Dec",
+        "aqi": 102.1
+      }
+    ],
+    "rank": 21
+  },
+  {
+    "id": "ernakulam",
+    "city": "Ernakulam",
+    "state": "Kerala",
+    "region": "South",
+    "description": "Commercial core of Kochi with maritime port winds.",
+    "lat": 9.9816,
+    "lng": 76.2999,
+    "aqi": 92.4,
+    "recent_aqi": 92.4,
+    "min_aqi": 55.0,
+    "max_aqi": 180.0,
+    "category": "Satisfactory",
+    "color": "#84cc16",
+    "risk_level": "Low Risk",
+    "health_advisory": "Minor breathing discomfort may develop in extremely sensitive or asthmatic individuals.",
+    "pollution_rate_label": "Acceptable Air Quality",
+    "dominant_pollutant": "CO",
+    "dominant_pollutant_ratio": 81.5,
+    "pollutants": {
+      "PM2.5": {
+        "value": 24.9,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 41.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "PM10": {
+        "value": 48.3,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 48.3,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "NO2": {
+        "value": 3.7,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 4.6,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 1.63,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 81.5,
+        "status": "Acceptable (Near Limit)",
+        "statusColor": "#84cc16"
+      },
+      "SO2": {
+        "value": 3.2,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 4.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 30.8,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 30.8,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 0,
+      "Satisfactory": 68.0,
+      "Moderate": 32.0,
+      "Poor": 0,
+      "Very Poor": 0,
+      "Severe": 0
+    },
+    "total_observations": 162,
+    "valid_aqi_observations": 153,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 136.9
+      },
+      {
+        "month": "Feb",
+        "aqi": 96.2
+      },
+      {
+        "month": "Mar",
+        "aqi": 84.0
+      },
+      {
+        "month": "Apr",
+        "aqi": 70.1
+      },
+      {
+        "month": "May",
+        "aqi": 97.2
+      },
+      {
+        "month": "Jun",
+        "aqi": 103.8
+      },
+      {
+        "month": "Jul",
+        "aqi": 111.0
+      },
+      {
+        "month": "Aug",
+        "aqi": 92.4
+      },
+      {
+        "month": "Sep",
+        "aqi": 92.4
+      },
+      {
+        "month": "Oct",
+        "aqi": 92.4
+      },
+      {
+        "month": "Nov",
+        "aqi": 92.4
+      },
+      {
+        "month": "Dec",
+        "aqi": 92.4
+      }
+    ],
+    "rank": 22
+  },
+  {
+    "id": "thiruvananthapuram",
+    "city": "Thiruvananthapuram",
+    "state": "Kerala",
+    "region": "South",
+    "description": "Southern coastal capital blessed by Arabian Sea breezes.",
+    "lat": 8.5241,
+    "lng": 76.9366,
+    "aqi": 75.9,
+    "recent_aqi": 66.5,
+    "min_aqi": 32.0,
+    "max_aqi": 230.0,
+    "category": "Satisfactory",
+    "color": "#84cc16",
+    "risk_level": "Low Risk",
+    "health_advisory": "Minor breathing discomfort may develop in extremely sensitive or asthmatic individuals.",
+    "pollution_rate_label": "Acceptable Air Quality",
+    "dominant_pollutant": "PM10",
+    "dominant_pollutant_ratio": 52.9,
+    "pollutants": {
+      "PM2.5": {
+        "value": 28.0,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 46.7,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "PM10": {
+        "value": 52.9,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 52.9,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "NO2": {
+        "value": 9.4,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 11.8,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 0.95,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 47.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "SO2": {
+        "value": 5.7,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 7.1,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 34.7,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 34.7,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 12.0,
+      "Satisfactory": 73.0,
+      "Moderate": 14.6,
+      "Poor": 0.4,
+      "Very Poor": 0,
+      "Severe": 0
+    },
+    "total_observations": 1112,
+    "valid_aqi_observations": 1052,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 114.6
+      },
+      {
+        "month": "Feb",
+        "aqi": 90.7
+      },
+      {
+        "month": "Mar",
+        "aqi": 83.0
+      },
+      {
+        "month": "Apr",
+        "aqi": 68.6
+      },
+      {
+        "month": "May",
+        "aqi": 65.2
+      },
+      {
+        "month": "Jun",
+        "aqi": 49.7
+      },
+      {
+        "month": "Jul",
+        "aqi": 53.2
+      },
+      {
+        "month": "Aug",
+        "aqi": 63.5
+      },
+      {
+        "month": "Sep",
+        "aqi": 59.9
+      },
+      {
+        "month": "Oct",
+        "aqi": 67.2
+      },
+      {
+        "month": "Nov",
+        "aqi": 88.3
+      },
+      {
+        "month": "Dec",
+        "aqi": 103.0
+      }
+    ],
+    "rank": 23
+  },
+  {
+    "id": "coimbatore",
+    "city": "Coimbatore",
+    "state": "Tamil Nadu",
+    "region": "South",
+    "description": "Major textile and precision manufacturing center in south India.",
+    "lat": 11.0168,
+    "lng": 76.9558,
+    "aqi": 73.0,
+    "recent_aqi": 68.2,
+    "min_aqi": 26.0,
+    "max_aqi": 120.0,
+    "category": "Satisfactory",
+    "color": "#84cc16",
+    "risk_level": "Low Risk",
+    "health_advisory": "Minor breathing discomfort may develop in extremely sensitive or asthmatic individuals.",
+    "pollution_rate_label": "Acceptable Air Quality",
+    "dominant_pollutant": "PM2.5",
+    "dominant_pollutant_ratio": 48.7,
+    "pollutants": {
+      "PM2.5": {
+        "value": 29.2,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 48.7,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "PM10": {
+        "value": 38.0,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 38.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "NO2": {
+        "value": 28.8,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 36.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 0.95,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 47.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "SO2": {
+        "value": 8.6,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 10.8,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 28.8,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 28.8,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 12.5,
+      "Satisfactory": 83.7,
+      "Moderate": 3.8,
+      "Poor": 0,
+      "Very Poor": 0,
+      "Severe": 0
+    },
+    "total_observations": 386,
+    "valid_aqi_observations": 344,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 76.4
+      },
+      {
+        "month": "Feb",
+        "aqi": 84.0
+      },
+      {
+        "month": "Mar",
+        "aqi": 78.3
+      },
+      {
+        "month": "Apr",
+        "aqi": 84.8
+      },
+      {
+        "month": "May",
+        "aqi": 57.9
+      },
+      {
+        "month": "Jun",
+        "aqi": 48.6
+      },
+      {
+        "month": "Jul",
+        "aqi": 67.5
+      },
+      {
+        "month": "Aug",
+        "aqi": 76.8
+      },
+      {
+        "month": "Sep",
+        "aqi": 87.7
+      },
+      {
+        "month": "Oct",
+        "aqi": 94.3
+      },
+      {
+        "month": "Nov",
+        "aqi": 71.2
+      },
+      {
+        "month": "Dec",
+        "aqi": 70.7
+      }
+    ],
+    "rank": 24
+  },
+  {
+    "id": "shillong",
+    "city": "Shillong",
+    "state": "Meghalaya",
+    "region": "Northeast",
+    "description": "Hill station in the Khasi Hills famed for clean pine air.",
+    "lat": 25.5788,
+    "lng": 91.8933,
+    "aqi": 53.8,
+    "recent_aqi": 57.9,
+    "min_aqi": 14.0,
+    "max_aqi": 182.0,
+    "category": "Satisfactory",
+    "color": "#84cc16",
+    "risk_level": "Low Risk",
+    "health_advisory": "Minor breathing discomfort may develop in extremely sensitive or asthmatic individuals.",
+    "pollution_rate_label": "Acceptable Air Quality",
+    "dominant_pollutant": "PM2.5",
+    "dominant_pollutant_ratio": 51.3,
+    "pollutants": {
+      "PM2.5": {
+        "value": 30.8,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 51.3,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "PM10": {
+        "value": 42.2,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 42.2,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "NO2": {
+        "value": 2.8,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 3.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 0.24,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 12.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "SO2": {
+        "value": 6.6,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 8.2,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 28.0,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 28.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 54.1,
+      "Satisfactory": 41.0,
+      "Moderate": 4.9,
+      "Poor": 0,
+      "Very Poor": 0,
+      "Severe": 0
+    },
+    "total_observations": 310,
+    "valid_aqi_observations": 205,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 68.6
+      },
+      {
+        "month": "Feb",
+        "aqi": 93.6
+      },
+      {
+        "month": "Mar",
+        "aqi": 67.9
+      },
+      {
+        "month": "Apr",
+        "aqi": 75.8
+      },
+      {
+        "month": "May",
+        "aqi": 32.5
+      },
+      {
+        "month": "Jun",
+        "aqi": 32.7
+      },
+      {
+        "month": "Jul",
+        "aqi": 24.0
+      },
+      {
+        "month": "Aug",
+        "aqi": 36.0
+      },
+      {
+        "month": "Sep",
+        "aqi": 40.9
+      },
+      {
+        "month": "Oct",
+        "aqi": 54.0
+      },
+      {
+        "month": "Nov",
+        "aqi": 29.1
+      },
+      {
+        "month": "Dec",
+        "aqi": 53.8
+      }
+    ],
+    "rank": 25
+  },
+  {
+    "id": "aizawl",
+    "city": "Aizawl",
+    "state": "Mizoram",
+    "region": "Northeast",
+    "description": "Scenic capital of Mizoram nestled in high verdant hills.",
+    "lat": 23.7271,
+    "lng": 92.7176,
+    "aqi": 34.8,
+    "recent_aqi": 34.8,
+    "min_aqi": 18.0,
+    "max_aqi": 92.0,
+    "category": "Good",
+    "color": "#10b981",
+    "risk_level": "Minimal Risk",
+    "health_advisory": "Air quality is considered satisfactory, and air pollution poses little or no risk.",
+    "pollution_rate_label": "Pristine Atmosphere",
+    "dominant_pollutant": "PM2.5",
+    "dominant_pollutant_ratio": 28.5,
+    "pollutants": {
+      "PM2.5": {
+        "value": 17.1,
+        "standard": 60.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Fine Particulate Matter (PM2.5)",
+        "percentOfLimit": 28.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "PM10": {
+        "value": 23.4,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Coarse Particulates (PM10)",
+        "percentOfLimit": 23.4,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "NO2": {
+        "value": 0.4,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Nitrogen Dioxide (NO2)",
+        "percentOfLimit": 0.5,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "CO": {
+        "value": 0.28,
+        "standard": 2.0,
+        "unit": "mg/m\u00b3",
+        "fullName": "Carbon Monoxide (CO)",
+        "percentOfLimit": 14.0,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "SO2": {
+        "value": 7.4,
+        "standard": 80.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Sulfur Dioxide (SO2)",
+        "percentOfLimit": 9.2,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      },
+      "O3": {
+        "value": 3.7,
+        "standard": 100.0,
+        "unit": "\u00b5g/m\u00b3",
+        "fullName": "Ground-Level Ozone (O3)",
+        "percentOfLimit": 3.7,
+        "status": "Good (Within Limits)",
+        "statusColor": "#10b981"
+      }
+    },
+    "bucket_percentages": {
+      "Good": 74.8,
+      "Satisfactory": 25.2,
+      "Moderate": 0,
+      "Poor": 0,
+      "Very Poor": 0,
+      "Severe": 0
+    },
+    "total_observations": 113,
+    "valid_aqi_observations": 111,
+    "monthly_trend": [
+      {
+        "month": "Jan",
+        "aqi": 34.8
+      },
+      {
+        "month": "Feb",
+        "aqi": 34.8
+      },
+      {
+        "month": "Mar",
+        "aqi": 65.3
+      },
+      {
+        "month": "Apr",
+        "aqi": 39.2
+      },
+      {
+        "month": "May",
+        "aqi": 24.2
+      },
+      {
+        "month": "Jun",
+        "aqi": 20.9
+      },
+      {
+        "month": "Jul",
+        "aqi": 20.0
+      },
+      {
+        "month": "Aug",
+        "aqi": 34.8
+      },
+      {
+        "month": "Sep",
+        "aqi": 34.8
+      },
+      {
+        "month": "Oct",
+        "aqi": 34.8
+      },
+      {
+        "month": "Nov",
+        "aqi": 34.8
+      },
+      {
+        "month": "Dec",
+        "aqi": 34.8
+      }
+    ],
+    "rank": 26
+  }
+];
+
+export default CITIES_POLLUTION_DATA;

@@ -83,7 +83,7 @@ export default function ModelInfoView() {
       ) : modelInfo ? (
         <div className="space-y-8">
           {/* Champion Model Banner */}
-          <div className="glass-card p-8 border-l-4 border-l-cyan-400 bg-gradient-to-r from-cyan-950/40 to-transparent">
+          <div className="glass-card p-8 border-l-4 border-l-cyan-400 bg-linear-to-r from-cyan-950/40 to-transparent">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div className="space-y-1.5">
                 <div className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-400 uppercase tracking-wider">

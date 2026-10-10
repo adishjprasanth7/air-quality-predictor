@@ -30,9 +30,10 @@ from preprocessing.preprocessor import (
 # Configuration
 PORT = int(os.getenv("PORT", 8000))
 HOST = os.getenv("HOST", "0.0.0.0")
-CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173").split(",")
+CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:5173,http://localhost:5174,http://localhost:3000,http://127.0.0.1:5173,http://127.0.0.1:5174").split(",")
 MODEL_PATH = os.getenv("MODEL_PATH", os.path.join(os.path.dirname(__file__), "model", "air_quality_model.pkl"))
 MODEL_INFO_PATH = os.getenv("MODEL_INFO_PATH", os.path.join(os.path.dirname(__file__), "model", "model_info.json"))
+CITIES_DATA_PATH = os.getenv("CITIES_DATA_PATH", os.path.join(os.path.dirname(__file__), "data", "cities_pollution_summary.json"))
 
 MONGODB_URI = os.getenv("MONGODB_URI", "mongodb://localhost:27017/air_quality_db")
 DB_NAME = os.getenv("DB_NAME", "air_quality_db")
@@ -209,7 +210,9 @@ def get_root():
             "security_status": "/security-status",
             "model_info": "/model-info",
             "predict": "/predict",
-            "predictions_history": "/predictions"
+            "predictions_history": "/predictions",
+            "cities": "/cities",
+            "city_detail": "/cities/{city_id}"
         }
     }
 
@@ -367,3 +370,99 @@ def get_predictions(limit: int = 50):
         "total_records": len(history),
         "history": history
     }
+
+# Cached cities data
+cities_cache: Optional[List[Dict[str, Any]]] = None
+
+def get_loaded_cities() -> List[Dict[str, Any]]:
+    global cities_cache
+    if cities_cache is None:
+        if not os.path.exists(CITIES_DATA_PATH):
+            # Fallback: if summary json doesn't exist yet, run process_cities or raise
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Cities pollution summary dataset not found. Run backend/data/process_cities.py first."
+            )
+        try:
+            with open(CITIES_DATA_PATH, "r", encoding="utf-8") as f:
+                cities_cache = json.load(f)
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Failed to read cities data: {str(e)}"
+            )
+    return cities_cache
+
+@app.get("/cities")
+def get_cities(
+    region: Optional[str] = None,
+    category: Optional[str] = None,
+    sort_by: Optional[str] = "aqi",
+    order: Optional[str] = "desc"
+):
+    """
+    Returns authentic CPCB air quality and pollutant statistics for 26 major monitored Indian cities.
+    Supports filtering by geographical region and pollution category.
+    """
+    cities = get_loaded_cities()
+    filtered = cities
+
+    if region:
+        filtered = [c for c in filtered if c.get("region", "").lower() == region.lower()]
+
+    if category:
+        filtered = [c for c in filtered if c.get("category", "").lower() == category.lower()]
+
+    # Sorting
+    reverse = (order.lower() == "desc")
+    if sort_by == "aqi":
+        filtered = sorted(filtered, key=lambda x: x.get("aqi", 0), reverse=reverse)
+    elif sort_by == "city":
+        filtered = sorted(filtered, key=lambda x: x.get("city", ""), reverse=reverse)
+    elif sort_by in ["PM2.5", "PM10", "NO2", "CO", "SO2", "O3"]:
+        filtered = sorted(
+            filtered,
+            key=lambda x: x.get("pollutants", {}).get(sort_by, {}).get("value", 0),
+            reverse=reverse
+        )
+
+    # Compute summary stats
+    aqi_values = [c["aqi"] for c in cities if "aqi" in c]
+    national_mean_aqi = round(sum(aqi_values) / len(aqi_values), 1) if aqi_values else 0.0
+
+    return {
+        "total_cities": len(filtered),
+        "national_mean_aqi": national_mean_aqi,
+        "most_polluted": cities[0]["city"] if cities else None,
+        "cleanest": cities[-1]["city"] if cities else None,
+        "cities": filtered
+    }
+
+@app.get("/cities/{city_id}")
+def get_city_detail(city_id: str):
+    """
+    Returns detailed pollutant rates and seasonal trends for a single city by name or slug.
+    """
+    cities = get_loaded_cities()
+    target = None
+    query = city_id.lower().replace(" ", "").replace("-", "")
+
+    for c in cities:
+        c_name = c["city"].lower().replace(" ", "").replace("-", "")
+        c_slug = c.get("id", "").lower().replace("-", "")
+        if query == c_name or query == c_slug:
+            target = c
+            break
+
+    if not target:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"City '{city_id}' not found in the 26 monitored Indian cities dataset."
+        )
+
+    return target
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host=HOST, port=PORT)
+

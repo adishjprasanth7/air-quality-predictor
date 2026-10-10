@@ -1,9 +1,10 @@
 import React from 'react';
-import { Wind, Activity, BarChart3, Cpu, GitBranch, ShieldCheck } from 'lucide-react';
+import { Wind, Activity, BarChart3, Cpu, GitBranch, ShieldCheck, MapPin } from 'lucide-react';
 
 export default function Navbar({ activeTab, setActiveTab, apiStatus, onOpenSecurity }) {
   const navItems = [
     { id: 'home', label: 'Home & AQI Guide', icon: Wind },
+    { id: 'map', label: 'Pollution Map & Cities', icon: MapPin },
     { id: 'predict', label: 'Predict AQI', icon: Activity },
     { id: 'dashboard', label: 'Dashboard & History', icon: BarChart3 },
     { id: 'model', label: 'ML Model & Evaluation', icon: Cpu },
@@ -15,7 +16,7 @@ export default function Navbar({ activeTab, setActiveTab, apiStatus, onOpenSecur
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Brand */}
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-2xl bg-gradient-to-tr from-cyan-400 to-blue-600 text-slate-950 font-bold shadow-lg shadow-cyan-500/25 animate-float">
+          <div className="p-2.5 rounded-2xl bg-linear-to-tr from-cyan-400 to-blue-600 text-slate-950 font-bold shadow-lg shadow-cyan-500/25 animate-float">
             <Wind size={22} className="text-slate-950 stroke-[2.5]" />
           </div>
           <div>
@@ -41,7 +42,7 @@ export default function Navbar({ activeTab, setActiveTab, apiStatus, onOpenSecur
                 onClick={() => setActiveTab(item.id)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition-all duration-300 whitespace-nowrap ${
                   isActive
-                    ? 'bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 shadow-md shadow-cyan-400/30'
+                    ? 'bg-linear-to-r from-cyan-400 to-blue-500 text-slate-950 shadow-md shadow-cyan-400/30'
                     : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`}
               >

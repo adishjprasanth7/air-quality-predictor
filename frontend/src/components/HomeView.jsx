@@ -1,10 +1,11 @@
 import React from 'react';
-import { ShieldCheck, Activity, ArrowRight, Gauge, Cpu, CheckCircle2, Shield, Lock, Sliders, Layers } from 'lucide-react';
+import { ShieldCheck, Activity, ArrowRight, Gauge, Cpu, CheckCircle2, Lock, MapPin, Compass } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollAnimation';
 
-export default function HomeView({ onStartPrediction, onOpenSecurity }) {
+export default function HomeView({ onStartPrediction, onOpenSecurity, onExploreMap }) {
   const [heroRef, heroVisible] = useScrollReveal();
   const [eduRef, eduVisible] = useScrollReveal();
+  const [mapSpotlightRef, mapSpotlightVisible] = useScrollReveal();
   const [catRef, catVisible] = useScrollReveal();
   const [workflowRef, workflowVisible] = useScrollReveal();
   const [secRef, secVisible] = useScrollReveal();
@@ -23,7 +24,7 @@ export default function HomeView({ onStartPrediction, onOpenSecurity }) {
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className={`relative overflow-hidden glass-card p-8 md:p-14 border border-cyan-500/20 bg-gradient-to-br from-slate-900/80 via-slate-900/50 to-cyan-950/20 transition-all duration-700 ${
+        className={`relative overflow-hidden glass-card p-8 md:p-14 border border-cyan-500/20 bg-linear-to-br from-slate-900/80 via-slate-900/50 to-cyan-950/20 transition-all duration-700 ${
           heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >
@@ -36,7 +37,7 @@ export default function HomeView({ onStartPrediction, onOpenSecurity }) {
 
           <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-tight">
             Predict Real-World Air Quality with{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-cyan-400 via-sky-300 to-blue-500">
               Machine Intelligence
             </span>
           </h1>
@@ -53,6 +54,12 @@ export default function HomeView({ onStartPrediction, onOpenSecurity }) {
               className="glass-btn text-sm md:text-base px-7 py-3.5 rounded-xl font-bold shadow-lg shadow-cyan-400/25"
             >
               Start AQI Prediction <ArrowRight size={18} />
+            </button>
+            <button
+              onClick={onExploreMap}
+              className="flex items-center gap-2 px-6 py-3.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-cyan-300 hover:text-white font-bold text-sm md:text-base shadow-lg transition"
+            >
+              <span>Explore Pollution Map</span>
             </button>
             <button
               onClick={onOpenSecurity}
@@ -147,6 +154,53 @@ export default function HomeView({ onStartPrediction, onOpenSecurity }) {
         </div>
       </section>
 
+      {/* Map Spotlight Section */}
+      <section
+        ref={mapSpotlightRef}
+        className={`glass-card p-8 md:p-10 space-y-6 border-cyan-500/20 bg-linear-to-br from-slate-900/90 via-slate-900/60 to-cyan-950/30 transition-all duration-700 ${
+          mapSpotlightVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="space-y-3 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 text-xs font-bold">
+              <Compass size={14} className="text-cyan-400" />
+              <span>Spatial Telemetry Grid</span>
+            </div>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+              Interactive Pollution Map & 26 Monitored Cities
+            </h2>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              Explore geographic criteria pollutant variations across all major urban centers in India. Filter by PM2.5, PM10, NO2, CO, SO2, and O3 to identify statutory health hotspots and test machine learning predictions with actual city measurements.
+            </p>
+            <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-slate-400">
+              <span className="flex items-center gap-1 text-rose-400 font-semibold">
+                <span className="w-2 h-2 rounded-full bg-rose-500"></span> Ahmedabad (452 AQI)
+              </span>
+              <span className="text-slate-600">•</span>
+              <span className="flex items-center gap-1 text-amber-400 font-semibold">
+                <span className="w-2 h-2 rounded-full bg-amber-400"></span> Delhi NCR (259 AQI)
+              </span>
+              <span className="text-slate-600">•</span>
+              <span className="flex items-center gap-1 text-emerald-400 font-semibold">
+                <span className="w-2 h-2 rounded-full bg-emerald-400"></span> Aizawl (34 AQI)
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              onClick={onExploreMap}
+              className="px-6 py-3.5 rounded-xl bg-linear-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-400/20 transition transform hover:-translate-y-0.5"
+            >
+              <MapPin size={16} className="stroke-[2.5]" />
+              <span>Launch Interactive Map</span>
+              <ArrowRight size={16} />
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* How the System Works */}
       <section
         ref={workflowRef}
@@ -197,7 +251,7 @@ export default function HomeView({ onStartPrediction, onOpenSecurity }) {
       {/* Production Security Card */}
       <section
         ref={secRef}
-        className={`glass-card p-8 md:p-10 space-y-6 border-emerald-500/20 bg-gradient-to-br from-slate-900/80 via-slate-900/50 to-emerald-950/20 transition-all duration-700 ${
+        className={`glass-card p-8 md:p-10 space-y-6 border-emerald-500/20 bg-linear-to-br from-slate-900/80 via-slate-900/50 to-emerald-950/20 transition-all duration-700 ${
           secVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >

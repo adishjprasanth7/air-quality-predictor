@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Activity, AlertCircle, RefreshCw, Sparkles, CheckCircle, ShieldAlert, Heart, Info, ShieldCheck, Lock } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Activity, AlertCircle, RefreshCw, Sparkles, CheckCircle, ShieldAlert, Heart, Info, Lock, MapPin } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollAnimation';
 import { API_BASE_URL } from '../config/api';
+import { CITIES_POLLUTION_DATA } from '../data/citiesData';
 
 const PRESETS = [
   {
@@ -26,8 +27,9 @@ const PRESETS = [
   }
 ];
 
-export default function PredictView({ onPredictionSuccess }) {
+export default function PredictView({ onPredictionSuccess, initialCityData, onNavigateToMap }) {
   const [containerRef, containerVisible] = useScrollReveal({ threshold: 0.05 });
+  const [loadedCity, setLoadedCity] = useState(initialCityData || null);
   const [formData, setFormData] = useState({
     'PM2.5': 65.0,
     'PM10': 120.0,
@@ -40,6 +42,42 @@ export default function PredictView({ onPredictionSuccess }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
+
+  // Auto-sync when initialCityData prop updates
+  useEffect(() => {
+    if (initialCityData && initialCityData.pollutants) {
+      setLoadedCity(initialCityData);
+      setFormData({
+        'PM2.5': Number(initialCityData.pollutants['PM2.5']?.value ?? 65.0),
+        'PM10': Number(initialCityData.pollutants['PM10']?.value ?? 120.0),
+        'NO2': Number(initialCityData.pollutants['NO2']?.value ?? 38.0),
+        'CO': Number(initialCityData.pollutants['CO']?.value ?? 1.1),
+        'SO2': Number(initialCityData.pollutants['SO2']?.value ?? 15.0),
+        'O3': Number(initialCityData.pollutants['O3']?.value ?? 32.0)
+      });
+      setResult(null);
+    }
+  }, [initialCityData]);
+
+  const handleSelectCityPreset = (cityId) => {
+    if (!cityId) {
+      setLoadedCity(null);
+      return;
+    }
+    const target = CITIES_POLLUTION_DATA.find((c) => c.id === cityId);
+    if (target && target.pollutants) {
+      setLoadedCity(target);
+      setFormData({
+        'PM2.5': Number(target.pollutants['PM2.5']?.value ?? 65.0),
+        'PM10': Number(target.pollutants['PM10']?.value ?? 120.0),
+        'NO2': Number(target.pollutants['NO2']?.value ?? 38.0),
+        'CO': Number(target.pollutants['CO']?.value ?? 1.1),
+        'SO2': Number(target.pollutants['SO2']?.value ?? 15.0),
+        'O3': Number(target.pollutants['O3']?.value ?? 32.0)
+      });
+      setResult(null);
+    }
+  };
 
   const featureConfigs = [
     {
@@ -74,8 +112,8 @@ export default function PredictView({ onPredictionSuccess }) {
       name: 'CO (Carbon Monoxide)',
       unit: 'mg/m³',
       min: 0,
-      max: 20,
-      step: 0.05,
+      max: 200,
+      step: 0.01,
       description: 'Toxic gas generated from incomplete engine combustion.'
     },
     {
@@ -178,28 +216,96 @@ export default function PredictView({ onPredictionSuccess }) {
             <span>Air Quality Prediction Engine</span>
           </h2>
           <p className="text-sm text-slate-400 mt-1">
-            Input verified criteria pollutant measurements or click an atmospheric preset below.
+            Input verified criteria pollutant measurements, pick an atmospheric preset, or load real CPCB observations for 26 Indian cities.
           </p>
         </div>
 
-        {/* Quick Presets */}
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-semibold text-slate-400 flex items-center gap-1 mr-1">
+        {/* Quick Presets & City Selector */}
+        <div className="flex flex-wrap items-center gap-2.5">
+          {/* City Monitored Dropdown */}
+          <div className="flex items-center gap-1.5 bg-slate-900/90 border border-cyan-400/30 rounded-xl px-2.5 py-1.5 shadow-sm">
+            <MapPin size={13} className="text-cyan-400" />
+            <select
+              value={loadedCity ? loadedCity.id : ''}
+              onChange={(e) => handleSelectCityPreset(e.target.value)}
+              className="bg-transparent text-xs text-white font-semibold outline-none cursor-pointer pr-1"
+            >
+              <option value="" className="bg-slate-950 text-slate-400">-- Load Indian City Data --</option>
+              {CITIES_POLLUTION_DATA.map((c) => (
+                <option key={c.id} value={c.id} className="bg-slate-950 text-white">
+                  {c.city} ({c.aqi} AQI - {c.category})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <span className="text-xs font-semibold text-slate-400 flex items-center gap-1 ml-1 mr-1">
             <Sparkles size={13} className="text-cyan-400" /> Presets:
           </span>
           {PRESETS.map((p, idx) => (
             <button
               key={idx}
               type="button"
-              onClick={() => applyPreset(p.values)}
-              className="text-xs px-3.5 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-white/10 hover:border-cyan-400/40 transition duration-200 flex items-center gap-1.5 shadow-sm"
+              onClick={() => {
+                setLoadedCity(null);
+                applyPreset(p.values);
+              }}
+              className="text-xs px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-white/10 hover:border-cyan-400/40 transition duration-200 flex items-center gap-1.5 shadow-sm"
             >
               <span className="font-semibold">{p.name}</span>
               <span className="text-[10px] text-cyan-400 font-mono">({p.tag})</span>
             </button>
           ))}
+
+          {onNavigateToMap && (
+            <button
+              type="button"
+              onClick={onNavigateToMap}
+              className="text-xs px-3 py-1.5 rounded-xl bg-cyan-400/10 hover:bg-cyan-400/20 text-cyan-300 border border-cyan-400/30 font-semibold transition flex items-center gap-1.5"
+            >
+              <MapPin size={12} />
+              <span>Open Map</span>
+            </button>
+          )}
         </div>
       </div>
+
+      {/* Active City Loaded Banner */}
+      {loadedCity && (
+        <div className="glass-card p-4 border-cyan-400/40 bg-cyan-950/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-fadeIn">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-cyan-400/10 text-cyan-400 border border-cyan-400/20">
+              <MapPin size={18} />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-white flex items-center gap-2">
+                <span>Loaded Real CPCB Ambient Data:</span>
+                <span className="text-cyan-300 font-extrabold">{loadedCity.city}, {loadedCity.state}</span>
+                <span
+                  className="px-2 py-0.5 rounded-full text-[10px] font-black border"
+                  style={{
+                    backgroundColor: `${loadedCity.color}25`,
+                    color: loadedCity.color,
+                    borderColor: `${loadedCity.color}60`
+                  }}
+                >
+                  {loadedCity.category} ({loadedCity.aqi} AQI)
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 mt-0.5">
+                Populated all 6 criteria pollutant measurements from authentic central pollution control board telemetry.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setLoadedCity(null)}
+            className="self-start sm:self-auto text-[11px] text-slate-400 hover:text-white underline underline-offset-2"
+          >
+            Clear City Data
+          </button>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Input Parameters Form (Glass UI Card) */}

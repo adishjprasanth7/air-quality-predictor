@@ -10,11 +10,14 @@ To construct a genuine, non-hardcoded machine learning system capable of taking 
 ---
 
 ## 2. Key Features
+- **Pan-India Spatial Pollution Map:** Interactive Leaflet map with CartoDB Dark Matter tiles plotting 26 monitored Indian cities with dynamic pollutant rates, pulsing aura pins, and real-time metric filtering.
+- **Criteria Pollutant Visualizer:** Multi-metric toggle (AQI, PM2.5, PM10, NO2, CO, SO2, O3) displaying statutory threshold compliance, dominant pollutant analysis, and 12-month seasonal fluctuation curves.
+- **Direct City-to-Model Pipeline:** 1-click injection of real monitored city pollutant measurements directly into the machine learning inference engine.
 - **Authentic Scikit-Learn Pipeline:** Uses actual trained regression models saved as serialized Joblib artifacts (`air_quality_model.pkl`).
 - **Deterministic Preprocessing:** Median imputation for sensor dropouts and standard scaling serialized within the pipeline to avoid data leakage.
 - **Model Governance & Transparency:** Live evaluator interface comparing Linear Regression, Random Forest, and Gradient Boosting regressors with actual MAE, RMSE, and $R^2$ scores.
 - **Feature Importance Analysis:** Real model weight extraction showing pollutant contribution percentages (`PM2.5: ~49.4%`, `CO: ~42.8%`, `PM10: ~4.2%`).
-- **Interactive UI with Presets:** Custom pollutant sliders alongside real-world environmental presets (*Clean Atmosphere*, *Moderate Urban*, *High Pollution*, *Severe Smog Crisis*).
+- **Interactive UI with Presets & Cities:** Custom pollutant sliders alongside real-world environmental presets and quick selection for 26 Indian urban stations.
 - **Persistent Telemetry:** Audits every user prediction with input parameters, timestamp, and AQI classification to MongoDB.
 - **Analytics Dashboard:** Recharts trend timelines and particulate distribution comparisons with empty-state handling.
 
@@ -144,12 +147,15 @@ air-quality-predictor/
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── Navbar.jsx           # Top navigation bar
-│   │   │   ├── HomeView.jsx         # AQI fundamentals and guide
-│   │   │   ├── PredictView.jsx      # Input sliders, presets, and result gauge
+│   │   │   ├── Navbar.jsx           # Top navigation bar with Map navigation
+│   │   │   ├── HomeView.jsx         # AQI fundamentals and guide with Map spotlight
+│   │   │   ├── PollutionMapView.jsx # Interactive Leaflet map & 26 cities telemetry
+│   │   │   ├── PredictView.jsx      # Input sliders, city loader, and result gauge
 │   │   │   ├── DashboardView.jsx    # Real-time Recharts trend analytics
 │   │   │   ├── ModelInfoView.jsx    # College evaluator model transparency view
 │   │   │   └── ProjectFlowView.jsx  # Complete visual project workflow
+│   │   ├── data/
+│   │   │   └── citiesData.js        # Authentically pre-compiled CPCB city dataset
 │   │   ├── App.jsx                  # Main view coordinator
 │   │   ├── main.jsx                 # React entry point
 │   │   └── index.css                # Dark mode & glassmorphism design tokens
@@ -224,8 +230,11 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 | `/` | `GET` | API Information & Service Discovery | Returns project description & version |
 | `/health` | `GET` | Health Check & Database Status | Checks model presence and MongoDB connection |
 | `/model-info` | `GET` | Live ML Metrics & Feature Weights | Returns genuine holdout $R^2$, RMSE, MAE |
+| `/cities` | `GET` | All 26 Monitored Cities & Pollution Rates | Returns rankings, coordinates, dominant pollutants |
+| `/cities/{id}` | `GET` | Detailed City Telemetry & Seasonal Trends | Returns monthly curves & 6 criteria breakdown |
 | `/predict` | `POST` | Execute ML Pipeline Inference | `{"PM2.5": 65, "PM10": 120, "NO2": 38, "CO": 1.1, "SO2": 15, "O3": 32}` |
 | `/predictions` | `GET` | Retrieve Prediction Audit History | Returns list of historical prediction runs |
+| `/security-status` | `GET` | OWASP Security Defense Audit | Live report of rate limiting, CSP, HSTS, payload guards |
 
 ---
 
