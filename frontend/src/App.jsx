@@ -7,6 +7,7 @@ import DashboardView from './components/DashboardView';
 import ModelInfoView from './components/ModelInfoView';
 import ProjectFlowView from './components/ProjectFlowView';
 import SecurityModal from './components/SecurityModal';
+import LoginView from './components/LoginView';
 import { API_BASE_URL } from './config/api';
 
 export default function App() {
@@ -14,6 +15,8 @@ export default function App() {
   const [apiStatus, setApiStatus] = useState('offline');
   const [isSecurityOpen, setIsSecurityOpen] = useState(false);
   const [selectedCityForPredict, setSelectedCityForPredict] = useState(null);
+  const [session, setSession] = useState(null);
+  const [authError, setAuthError] = useState('');
 
   const checkApiHealth = async () => {
     try {
@@ -34,6 +37,41 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    let isMounted = true;
+    fetch(`${API_BASE_URL}/auth/me`, { credentials: 'include' })
+      .then(async (response) => {
+        if (!response.ok) throw new Error(`Authentication check failed (${response.status}).`);
+        return response.json();
+      })
+      .then((data) => {
+        if (isMounted) setSession(data.user ? { user: data.user } : null);
+      })
+      .catch((error) => {
+        console.error('Could not restore the authentication session:', error);
+        if (isMounted) setAuthError('Could not check your sign-in status. Please refresh and try again.');
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleSignOut = async () => {
+    setAuthError('');
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+      if (!response.ok) throw new Error(`Sign out failed (${response.status}).`);
+      setSession(null);
+    } catch (error) {
+      console.error('Could not sign out:', error);
+      setAuthError('Could not sign out. Please try again.');
+    }
+  };
+
   const handleSelectCityForPrediction = (city) => {
     setSelectedCityForPredict(city);
     setActiveTab('predict');
@@ -46,11 +84,19 @@ export default function App() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         apiStatus={apiStatus}
+        session={session}
+        onSignOut={handleSignOut}
         onOpenSecurity={() => setIsSecurityOpen(true)}
       />
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {authError && (
+          <div className="mb-5 flex items-center justify-between gap-4 rounded-xl border border-rose-400/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-200" role="alert">
+            <span>{authError}</span>
+            <button type="button" className="underline underline-offset-4" onClick={() => setAuthError('')}>Dismiss</button>
+          </div>
+        )}
         {activeTab === 'home' && (
           <HomeView
             onStartPrediction={() => setActiveTab('predict')}
@@ -78,6 +124,13 @@ export default function App() {
         )}
         {activeTab === 'flow' && (
           <ProjectFlowView />
+        )}
+        {activeTab === 'login' && (
+          <LoginView
+            session={session}
+            onAuthenticated={setSession}
+            onBack={() => setActiveTab('home')}
+          />
         )}
       </main>
 

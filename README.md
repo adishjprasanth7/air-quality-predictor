@@ -18,7 +18,7 @@ To construct a genuine, non-hardcoded machine learning system capable of taking 
 - **Model Governance & Transparency:** Live evaluator interface comparing Linear Regression, Random Forest, and Gradient Boosting regressors with actual MAE, RMSE, and $R^2$ scores.
 - **Feature Importance Analysis:** Real model weight extraction showing pollutant contribution percentages (`PM2.5: ~49.4%`, `CO: ~42.8%`, `PM10: ~4.2%`).
 - **Interactive UI with Presets & Cities:** Custom pollutant sliders alongside real-world environmental presets and quick selection for 26 Indian urban stations.
-- **Persistent Telemetry:** Audits every user prediction with input parameters, timestamp, and AQI classification to MongoDB.
+- **Persistent Telemetry:** Stores prediction history in the same PostgreSQL database as user accounts and sessions.
 - **Analytics Dashboard:** Recharts trend timelines and particulate distribution comparisons with empty-state handling.
 
 ---
@@ -28,10 +28,10 @@ To construct a genuine, non-hardcoded machine learning system capable of taking 
 | Layer | Technologies |
 | :--- | :--- |
 | **Machine Learning** | Python 3.13, Scikit-learn, Pandas, NumPy, Scipy, Joblib |
-| **Backend API** | FastAPI, Uvicorn, Pydantic, Python-dotenv |
-| **Database** | MongoDB (Local / MongoDB Atlas via PyMongo) |
+| **Backend API** | FastAPI, Uvicorn, Pydantic, SQLAlchemy, Python-dotenv |
+| **Database** | PostgreSQL on Render (SQLite for local development) |
 | **Frontend UI** | React.js (Vite), Tailwind CSS, Recharts, Lucide Icons |
-| **DevOps / Hosting** | Vercel (Frontend), Render / Railway (Backend), Git |
+| **DevOps / Hosting** | Render, Docker, Git |
 
 ---
 
@@ -98,7 +98,7 @@ Detailed data profiling is documented in [`DATASET_ANALYSIS.md`](./DATASET_ANALY
                       [ Prediction Result & Risk ]
                                 |
                                 v
-                     [ MongoDB Audit Storage ]
+                     [ PostgreSQL Audit Storage ]
                                 |
                                 v
                     [ Recharts Visual Analytics ]
@@ -130,41 +130,20 @@ The candidate models were evaluated on the 20% holdout test set (4,961 unseen sa
 ```
 air-quality-predictor/
 ├── backend/
-│   ├── data/
-│   │   ├── city_day.csv             # Official CPCB training dataset
-│   │   ├── inspect_raw.py           # Dataset profile generator
-│   │   └── dataset_profile.json     # Profiling summary
-│   ├── model/
-│   │   ├── air_quality_model.pkl    # Serialized Scikit-learn pipeline
-│   │   └── model_info.json          # Verified benchmark & metrics metadata
-│   ├── preprocessing/
-│   │   └── preprocessor.py          # Features, NAQI categories & advisories
-│   ├── training/
-│   │   └── train.py                 # Multi-model training and evaluation script
-│   ├── main.py                      # FastAPI microservice
-│   ├── test_api.py                  # API test suite
-│   └── requirements.txt             # Python backend dependencies
+│   ├── data/                        # CPCB data and city summaries
+│   ├── model/                       # Serialized model and evaluation metadata
+│   ├── preprocessing/               # Features, NAQI categories & advisories
+│   ├── training/                    # Model training scripts
+│   ├── main.py                      # FastAPI API, auth, and database
+│   ├── test_api.py                  # API integration test script
+│   └── test_auth.py                 # Email/password authentication tests
 ├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Navbar.jsx           # Top navigation bar with Map navigation
-│   │   │   ├── HomeView.jsx         # AQI fundamentals and guide with Map spotlight
-│   │   │   ├── PollutionMapView.jsx # Interactive Leaflet map & 26 cities telemetry
-│   │   │   ├── PredictView.jsx      # Input sliders, city loader, and result gauge
-│   │   │   ├── DashboardView.jsx    # Real-time Recharts trend analytics
-│   │   │   ├── ModelInfoView.jsx    # College evaluator model transparency view
-│   │   │   └── ProjectFlowView.jsx  # Complete visual project workflow
-│   │   ├── data/
-│   │   │   └── citiesData.js        # Authentically pre-compiled CPCB city dataset
-│   │   ├── App.jsx                  # Main view coordinator
-│   │   ├── main.jsx                 # React entry point
-│   │   └── index.css                # Dark mode & glassmorphism design tokens
+│   ├── src/                         # React views, components, and data
 │   ├── package.json                 # Frontend dependencies
-│   ├── index.html                   # HTML entry point with meta tags
-│   └── vercel.json                  # Single-page app routing for Vercel
-├── .env.example                     # Environment configuration template
-├── DATASET_ANALYSIS.md              # Stage 1 dataset inspection documentation
-├── Procfile                         # Cloud deployment process file
+│   └── index.html                   # HTML entry point
+├── requirements.txt                 # Python dependencies
+├── Dockerfile                       # Combined frontend/API Render image
+├── render.yaml                      # Render web service and PostgreSQL Blueprint
 └── package.json                     # Root convenience scripts
 ```
 
@@ -174,8 +153,7 @@ air-quality-predictor/
 
 ### Prerequisites
 - Python 3.10+
-- Node.js 18+ and npm
-- (Optional) MongoDB running locally or a MongoDB Atlas URI
+- Node.js 22+ and npm
 
 ### 1. Clone & Environment Configuration
 ```bash
@@ -187,13 +165,17 @@ cp .env.example .env
 ### 2. Backend Installation & Training
 ```bash
 # Install Python packages
-python -m pip install -r backend/requirements.txt
+python -m pip install -r requirements.txt
 
 # Train the ML models and generate the pipeline
 python backend/training/train.py
 
 # Test all API endpoints
 python backend/test_api.py
+
+# Test email/password authentication
+python -m pip install -r requirements-test.txt
+python -m backend.test_auth
 ```
 
 ### 3. Frontend Installation
@@ -202,6 +184,11 @@ cd frontend
 npm install
 cd ..
 ```
+
+### 4. Authentication and database
+Authentication is handled by the FastAPI backend, with accounts and prediction history stored in PostgreSQL. For local development, the backend defaults to a SQLite file. Set `DATABASE_URL` to a PostgreSQL connection string to use PostgreSQL locally. The frontend does not require Supabase credentials.
+
+The login page supports email/password signup and sign-in. Passwords are stored as scrypt hashes and sessions use HttpOnly cookies. Social login and self-service password reset are not configured.
 
 ---
 
@@ -227,8 +214,12 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 | Endpoint | Method | Description | Sample Request / Response |
 | :--- | :--- | :--- | :--- |
-| `/` | `GET` | API Information & Service Discovery | Returns project description & version |
-| `/health` | `GET` | Health Check & Database Status | Checks model presence and MongoDB connection |
+| `/` | `GET` | Frontend or API Information | Serves the built UI on Render; API metadata during local backend-only development |
+| `/health` | `GET` | Health Check & Database Status | Checks model presence and PostgreSQL connection |
+| `/auth/signup` | `POST` | Create an account | Email/password credentials |
+| `/auth/login` | `POST` | Start a secure session | Sets an HttpOnly session cookie |
+| `/auth/me` | `GET` | Restore the current session | Returns the signed-in user, if any |
+| `/auth/logout` | `POST` | End the current session | Revokes the session and clears its cookie |
 | `/model-info` | `GET` | Live ML Metrics & Feature Weights | Returns genuine holdout $R^2$, RMSE, MAE |
 | `/cities` | `GET` | All 26 Monitored Cities & Pollution Rates | Returns rankings, coordinates, dominant pollutants |
 | `/cities/{id}` | `GET` | Detailed City Telemetry & Seasonal Trends | Returns monthly curves & 6 criteria breakdown |
@@ -240,19 +231,17 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## 11. Deployment Guide
 
-### Frontend Deployment (Vercel)
-1. Push the code to GitHub.
-2. In Vercel, import the repository and set the **Root Directory** to `frontend`.
-3. Build command: `npm run build`, Output directory: `dist`.
-4. Deploy.
+### Deploy the complete application to Render
+The Render Blueprint in [`render.yaml`](./render.yaml) deploys the React frontend and FastAPI API together in one web service, and provisions PostgreSQL for accounts, sessions, and prediction history.
 
-### Backend Deployment (Render / Railway)
-1. In Render, select **New Web Service** from your GitHub repo.
-2. Set the **Build Command** to: `pip install -r backend/requirements.txt && python backend/training/train.py`
-3. Set the **Start Command** to: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
-4. Add Environment Variables:
-   - `MONGODB_URI`: Your MongoDB Atlas connection string.
-   - `CORS_ORIGINS`: Your Vercel frontend URL.
+1. Push the repository to GitHub and create a new Blueprint in Render from that repository.
+2. Review the web-service and PostgreSQL plans in the Blueprint before applying; Render may charge for these resources.
+3. Apply the Blueprint and wait for the service health check to pass. Render supplies `DATABASE_URL`; the service creates its tables on startup.
+4. Open the service URL. The login page and API are served from the same Render origin, so no Supabase project or separate frontend hosting is needed.
+
+Existing Supabase accounts and MongoDB history are not imported; users will need to create new accounts, and old prediction records will remain in their existing database.
+
+For a local combined build, run `npm run build` in `frontend`, then start the backend. The backend serves `frontend/dist` when that directory exists. For separate local frontend/backend development, copy `frontend/.env.example` to `frontend/.env.local` and run Vite and FastAPI in separate terminals.
 
 ---
 

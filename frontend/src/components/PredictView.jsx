@@ -474,7 +474,7 @@ export default function PredictView({ onPredictionSuccess, initialCityData, onNa
               <div className="flex items-center justify-between pt-2 border-t border-white/10 text-xs">
                 <span className="flex items-center gap-1.5 text-emerald-400">
                   <CheckCircle size={14} />
-                  <span>Persisted to MongoDB</span>
+                  <span>Persisted to application database</span>
                 </span>
                 <span className="text-slate-500 font-mono text-[11px]">Audit ID: {result.timestamp.replace(/[^0-9]/g, '')}</span>
               </div>

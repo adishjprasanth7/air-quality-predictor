@@ -205,7 +205,7 @@ export default function DashboardView({ onGoToPredict }) {
             <div className="p-6 border-b border-white/10 flex items-center justify-between">
               <div>
                 <h3 className="text-base font-bold text-white">Audit Trail & Inference Records</h3>
-                <p className="text-xs text-slate-400">Authenticated telemetry saved to MongoDB collection</p>
+                <p className="text-xs text-slate-400">Prediction telemetry saved to the application database</p>
               </div>
               <span className="text-xs text-slate-400 font-mono">Showing last {history.length} runs</span>
             </div>

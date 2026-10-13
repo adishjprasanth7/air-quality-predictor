@@ -101,8 +101,8 @@ export default function ProjectFlowView() {
       color: 'border-emerald-500/40 text-emerald-400 bg-emerald-500/10'
     },
     {
-      title: 'MongoDB History Persistence',
-      subtitle: 'Auditing predictions, timestamps, and parameters to database collection',
+      title: 'Database History Persistence',
+      subtitle: 'Stores predictions, timestamps, and pollutant readings in PostgreSQL on Render',
       icon: Database,
       tag: 'Persistence Layer',
       color: 'border-green-500/40 text-green-400 bg-green-500/10'

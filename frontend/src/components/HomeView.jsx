@@ -240,9 +240,9 @@ export default function HomeView({ onStartPrediction, onOpenSecurity, onExploreM
             <div className="w-9 h-9 rounded-xl bg-emerald-400/10 text-emerald-300 font-extrabold flex items-center justify-center text-sm border border-emerald-400/20">
               03
             </div>
-            <h3 className="font-bold text-white text-base">Advisory & MongoDB Audit</h3>
+            <h3 className="font-bold text-white text-base">Advisory & Database Audit</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Maps AQI to official NAQI risk categories, delivers medical precautions, and stores the session into MongoDB for chronological telemetry.
+              Maps AQI to official NAQI risk categories, delivers medical precautions, and stores prediction history in the application database.
             </p>
           </div>
         </div>

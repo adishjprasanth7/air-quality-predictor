@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: aerovision
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: aerovision-db
+          property: connectionString
+      - key: SESSION_COOKIE_SECURE
+        value: "true"
+
+databases:
+  - name: aerovision-db
+    databaseName: aerovision
+    user: aerovision
+    plan: basic-256mb

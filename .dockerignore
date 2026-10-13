@@ -1,0 +1,12 @@
+.git
+.venv
+venv
+**/__pycache__
+**/*.py[cod]
+**/node_modules
+frontend/dist
+backend/data/city_day.csv
+*.db
+.env
+.env.*
+!.env.example

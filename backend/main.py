@@ -3,15 +3,41 @@ import sys
 import json
 import time
 import math
+import re
 import datetime
+import base64
+import hashlib
+import hmac
+import logging
+import secrets
 from collections import defaultdict
 from typing import Dict, Any, List, Optional
 import joblib
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, Field, field_validator
+from sqlalchemy import (
+    JSON,
+    Column,
+    Float,
+    ForeignKey,
+    Integer,
+    BigInteger,
+    MetaData,
+    String,
+    Table,
+    Text,
+    create_engine,
+    delete,
+    insert,
+    select,
+    text,
+)
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.engine import Engine
+from sqlalchemy.pool import StaticPool
 from dotenv import load_dotenv
 
 # Ensure backend root is on Python sys.path
@@ -34,23 +60,71 @@ CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:5173,http://localhost
 MODEL_PATH = os.getenv("MODEL_PATH", os.path.join(os.path.dirname(__file__), "model", "air_quality_model.pkl"))
 MODEL_INFO_PATH = os.getenv("MODEL_INFO_PATH", os.path.join(os.path.dirname(__file__), "model", "model_info.json"))
 CITIES_DATA_PATH = os.getenv("CITIES_DATA_PATH", os.path.join(os.path.dirname(__file__), "data", "cities_pollution_summary.json"))
-
-MONGODB_URI = os.getenv("MONGODB_URI", "mongodb://localhost:27017/air_quality_db")
-DB_NAME = os.getenv("DB_NAME", "air_quality_db")
-COLLECTION_NAME = os.getenv("COLLECTION_NAME", "predictions")
+FRONTEND_DIST_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "dist"))
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "sqlite:///" + os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "air_quality.db")).replace("\\", "/"),
+)
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
+elif DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+SESSION_COOKIE_NAME = "aerovision_session"
+SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "false").lower() == "true"
+SESSION_DURATION_SECONDS = 60 * 60 * 24 * 30
 
 # Security Configuration
 RATE_LIMIT_WINDOW = 60  # seconds
 RATE_LIMIT_MAX_REQUESTS = 120  # requests per window
 MAX_PAYLOAD_SIZE = 64 * 1024  # 64 KB limit
+AUTH_RATE_LIMIT_WINDOW = 60
+AUTH_RATE_LIMIT_MAX_ATTEMPTS = 20
 
 # In-memory sliding window rate limiter
 ip_request_history = defaultdict(list)
+auth_attempt_history = defaultdict(list)
+logger = logging.getLogger(__name__)
+
+metadata = MetaData()
+users_table = Table(
+    "users",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("email", String(320), nullable=False, unique=True),
+    Column("password_hash", String(256), nullable=False),
+)
+sessions_table = Table(
+    "sessions",
+    metadata,
+    Column("token_hash", String(64), primary_key=True),
+    Column("user_id", Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False),
+    Column("expires_at", BigInteger, nullable=False),
+)
+predictions_table = Table(
+    "predictions",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("timestamp", String(32), nullable=False),
+    Column("inputs", JSON, nullable=False),
+    Column("predicted_aqi", Float, nullable=False),
+    Column("category", String(64), nullable=False),
+    Column("color", String(32), nullable=False),
+    Column("risk_level", String(64), nullable=False),
+    Column("health_advisory", Text, nullable=False),
+    Column("precautions", JSON, nullable=False),
+)
+
+engine_options = {"pool_pre_ping": True}
+if DATABASE_URL.startswith("sqlite:"):
+    engine_options["connect_args"] = {"check_same_thread": False}
+    if DATABASE_URL.endswith(":memory:"):
+        engine_options["poolclass"] = StaticPool
+database_engine: Engine = create_engine(DATABASE_URL, **engine_options)
 
 # Initialize FastAPI App
 app = FastAPI(
     title="AI-Based Air Quality Predictor API",
-    description="Production-grade, secure REST API providing real-time Machine Learning AQI predictions, model transparency, and history tracking.",
+    description="Secure air-quality prediction, account, and PostgreSQL history service.",
     version="1.1.0"
 )
 
@@ -120,25 +194,98 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Global model cache and DB client
+# Global model cache
 model_pipeline = None
-mongo_client = None
-mongo_collection = None
-fallback_memory_store: List[Dict[str, Any]] = []
 
 def init_db():
-    global mongo_client, mongo_collection
+    metadata.create_all(database_engine)
+    with database_engine.begin() as connection:
+        connection.execute(text("SELECT 1"))
+        connection.execute(
+            delete(sessions_table).where(sessions_table.c.expires_at <= int(time.time()))
+        )
+    print(f"[Database] Connected successfully using {database_engine.dialect.name}.")
+
+def hash_password(password: str) -> str:
+    salt = secrets.token_bytes(16)
+    digest = hashlib.scrypt(password.encode("utf-8"), salt=salt, n=2**14, r=8, p=1, dklen=32)
+    return f"scrypt${base64.urlsafe_b64encode(salt).decode()}${base64.urlsafe_b64encode(digest).decode()}"
+
+def verify_password(password: str, stored_hash: str) -> bool:
     try:
-        from pymongo import MongoClient
-        mongo_client = MongoClient(MONGODB_URI, serverSelectionTimeoutMS=2000)
-        mongo_client.admin.command('ping')
-        db = mongo_client[DB_NAME]
-        mongo_collection = db[COLLECTION_NAME]
-        print("[MongoDB] Connected successfully to:", MONGODB_URI)
-    except Exception as e:
-        mongo_client = None
-        mongo_collection = None
-        print(f"[MongoDB] Connection warning (using in-memory fallback): {e}")
+        scheme, salt_text, digest_text = stored_hash.split("$")
+        if scheme != "scrypt":
+            return False
+        salt = base64.urlsafe_b64decode(salt_text)
+        expected_digest = base64.urlsafe_b64decode(digest_text)
+        actual_digest = hashlib.scrypt(password.encode("utf-8"), salt=salt, n=2**14, r=8, p=1, dklen=32)
+        return hmac.compare_digest(actual_digest, expected_digest)
+    except (ValueError, TypeError):
+        return False
+
+DUMMY_PASSWORD_HASH = hash_password(secrets.token_urlsafe(32))
+
+def enforce_auth_rate_limit(request: Request) -> None:
+    client_ip = request.client.host if request.client else "unknown"
+    key = client_ip
+    now = time.monotonic()
+    recent_attempts = [attempt for attempt in auth_attempt_history[key] if now - attempt < AUTH_RATE_LIMIT_WINDOW]
+    if len(recent_attempts) >= AUTH_RATE_LIMIT_MAX_ATTEMPTS:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many authentication attempts. Please wait a minute and try again.",
+            headers={"Retry-After": str(AUTH_RATE_LIMIT_WINDOW)},
+        )
+    recent_attempts.append(now)
+    auth_attempt_history[key] = recent_attempts
+
+def set_session_cookie(response: Response, token: str) -> None:
+    response.set_cookie(
+        key=SESSION_COOKIE_NAME,
+        value=token,
+        httponly=True,
+        secure=SESSION_COOKIE_SECURE,
+        samesite="lax",
+        max_age=SESSION_DURATION_SECONDS,
+        path="/",
+    )
+
+def get_session_user(request: Request) -> Optional[Dict[str, Any]]:
+    token = request.cookies.get(SESSION_COOKIE_NAME)
+    if not token:
+        return None
+
+    token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
+    with database_engine.begin() as connection:
+        user = connection.execute(
+            select(users_table.c.id, users_table.c.email)
+            .select_from(
+                sessions_table.join(users_table, sessions_table.c.user_id == users_table.c.id)
+            )
+            .where(
+                sessions_table.c.token_hash == token_hash,
+                sessions_table.c.expires_at > int(time.time()),
+            )
+        ).mappings().first()
+        if user is None:
+            connection.execute(delete(sessions_table).where(sessions_table.c.token_hash == token_hash))
+            return None
+        return {"id": user["id"], "email": user["email"]}
+
+def create_session(connection, user_id: int, response: Response) -> Dict[str, Any]:
+    token = secrets.token_urlsafe(32)
+    connection.execute(
+        insert(sessions_table).values(
+            token_hash=hashlib.sha256(token.encode("utf-8")).hexdigest(),
+            user_id=user_id,
+            expires_at=int(time.time()) + SESSION_DURATION_SECONDS,
+        )
+    )
+    set_session_cookie(response, token)
+    user = connection.execute(
+        select(users_table.c.id, users_table.c.email).where(users_table.c.id == user_id)
+    ).mappings().one()
+    return {"id": user["id"], "email": user["email"]}
 
 def get_loaded_model():
     global model_pipeline
@@ -196,8 +343,23 @@ class PredictionRequest(BaseModel):
             }
         }
 
+class AuthCredentials(BaseModel):
+    email: str = Field(..., min_length=3, max_length=320)
+    password: str = Field(..., min_length=8, max_length=128)
+
+    @field_validator("email")
+    @classmethod
+    def normalize_email(cls, value: str) -> str:
+        normalized = value.strip().lower()
+        if not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", normalized):
+            raise ValueError("Enter a valid email address.")
+        return normalized
+
 @app.get("/")
 def get_root():
+    frontend_index = os.path.join(FRONTEND_DIST_PATH, "index.html")
+    if os.path.isfile(frontend_index):
+        return FileResponse(frontend_index)
     return {
         "project": "AI-Based Air Quality Predictor",
         "description": "Authentic Machine Learning system predicting AQI based on actual environmental pollutant measurements.",
@@ -207,6 +369,12 @@ def get_root():
         "docs_url": "/docs",
         "endpoints": {
             "health": "/health",
+            "auth": {
+                "signup": "/auth/signup",
+                "login": "/auth/login",
+                "current_session": "/auth/me",
+                "logout": "/auth/logout"
+            },
             "security_status": "/security-status",
             "model_info": "/model-info",
             "predict": "/predict",
@@ -219,21 +387,77 @@ def get_root():
 @app.get("/health")
 def get_health():
     model_loaded = os.path.exists(MODEL_PATH)
-    db_connected = False
-    if mongo_client:
-        try:
-            mongo_client.admin.command('ping')
-            db_connected = True
-        except Exception:
-            db_connected = False
+    try:
+        with database_engine.connect() as connection:
+            connection.execute(text("SELECT 1"))
+        db_connected = True
+    except Exception:
+        db_connected = False
 
     return {
         "status": "healthy" if model_loaded else "model_missing",
         "timestamp": datetime.datetime.now().isoformat(),
         "model_file_present": model_loaded,
         "database_connected": db_connected,
-        "database_type": "MongoDB Atlas / Local" if db_connected else "In-Memory Fallback"
+        "database_type": database_engine.dialect.name if db_connected else "Unavailable"
     }
+
+@app.post("/auth/signup", status_code=status.HTTP_201_CREATED)
+def sign_up(credentials: AuthCredentials, request: Request, response: Response):
+    enforce_auth_rate_limit(request)
+    try:
+        with database_engine.begin() as connection:
+            user_id = connection.execute(
+                insert(users_table).values(
+                    email=credentials.email,
+                    password_hash=hash_password(credentials.password),
+                )
+            ).inserted_primary_key[0]
+            user = create_session(connection, user_id, response)
+    except IntegrityError as error:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="An account with this email already exists.",
+        ) from error
+    return {"user": user}
+
+@app.post("/auth/login")
+def sign_in(credentials: AuthCredentials, request: Request, response: Response):
+    enforce_auth_rate_limit(request)
+    with database_engine.begin() as connection:
+        user = connection.execute(
+            select(users_table.c.id, users_table.c.password_hash)
+            .where(users_table.c.email == credentials.email)
+        ).mappings().first()
+        password_hash = user["password_hash"] if user is not None else DUMMY_PASSWORD_HASH
+        password_matches = verify_password(credentials.password, password_hash)
+        if user is None or not password_matches:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Email or password is incorrect.",
+            )
+        session_user = create_session(connection, user["id"], response)
+    return {"user": session_user}
+
+@app.get("/auth/me")
+def get_current_session(request: Request):
+    return {"user": get_session_user(request)}
+
+@app.post("/auth/logout")
+def sign_out(request: Request, response: Response):
+    token = request.cookies.get(SESSION_COOKIE_NAME)
+    if token:
+        token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
+        with database_engine.begin() as connection:
+            connection.execute(delete(sessions_table).where(sessions_table.c.token_hash == token_hash))
+    response.delete_cookie(
+        key=SESSION_COOKIE_NAME,
+        httponly=True,
+        secure=SESSION_COOKIE_SECURE,
+        samesite="lax",
+        path="/",
+    )
+    return {"message": "Signed out."}
 
 @app.get("/security-status")
 def get_security_status():
@@ -247,6 +471,11 @@ def get_security_status():
                 "algorithm": "Sliding Window Counter",
                 "limit_per_minute": RATE_LIMIT_MAX_REQUESTS,
                 "window_seconds": RATE_LIMIT_WINDOW
+            },
+            "authentication_rate_limiter": {
+                "enabled": True,
+                "limit_per_ip_per_minute": AUTH_RATE_LIMIT_MAX_ATTEMPTS,
+                "window_seconds": AUTH_RATE_LIMIT_WINDOW
             },
             "security_headers": {
                 "enabled": True,
@@ -337,16 +566,15 @@ def predict_aqi(payload: PredictionRequest):
         "precautions": classification["precautions"]
     }
     
-    if mongo_collection is not None:
-        try:
-            rec_to_insert = record.copy()
-            mongo_collection.insert_one(rec_to_insert)
-            record.pop("_id", None)
-        except Exception as e:
-            print(f"[MongoDB] Insert error: {e}, saving to fallback list.")
-            fallback_memory_store.append(record)
-    else:
-        fallback_memory_store.append(record)
+    try:
+        with database_engine.begin() as connection:
+            connection.execute(insert(predictions_table).values(**record))
+    except Exception as error:
+        logger.exception("Could not save prediction history.")
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Prediction completed, but its history could not be saved.",
+        ) from error
         
     return record
 
@@ -354,17 +582,22 @@ def predict_aqi(payload: PredictionRequest):
 def get_predictions(limit: int = 50):
     # Bound limit parameter securely
     safe_limit = max(1, min(limit, 100))
-    history: List[Dict[str, Any]] = []
-    
-    if mongo_collection is not None:
-        try:
-            cursor = mongo_collection.find({}, {"_id": 0}).sort("timestamp", -1).limit(safe_limit)
-            history = list(cursor)
-        except Exception as e:
-            print(f"[MongoDB] Find error: {e}, falling back to memory.")
-            history = list(reversed(fallback_memory_store))[:safe_limit]
-    else:
-        history = list(reversed(fallback_memory_store))[:safe_limit]
+    with database_engine.connect() as connection:
+        rows = connection.execute(
+            select(
+                predictions_table.c.timestamp,
+                predictions_table.c.inputs,
+                predictions_table.c.predicted_aqi,
+                predictions_table.c.category,
+                predictions_table.c.color,
+                predictions_table.c.risk_level,
+                predictions_table.c.health_advisory,
+                predictions_table.c.precautions,
+            )
+            .order_by(predictions_table.c.id.desc())
+            .limit(safe_limit)
+        ).mappings()
+        history = [dict(row) for row in rows]
         
     return {
         "total_records": len(history),
@@ -462,7 +695,11 @@ def get_city_detail(city_id: str):
 
     return target
 
+if os.path.isdir(FRONTEND_DIST_PATH):
+    from fastapi.staticfiles import StaticFiles
+
+    app.mount("/", StaticFiles(directory=FRONTEND_DIST_PATH, html=True), name="frontend")
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host=HOST, port=PORT)
-
