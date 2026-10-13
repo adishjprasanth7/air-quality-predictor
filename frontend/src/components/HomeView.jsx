@@ -1,14 +1,13 @@
 import React from 'react';
-import { ShieldCheck, Activity, ArrowRight, Gauge, Cpu, CheckCircle2, Lock, MapPin, Compass } from 'lucide-react';
+import { ShieldCheck, Activity, ArrowRight, Gauge, Cpu, CheckCircle2, MapPin, Compass } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollAnimation';
 
-export default function HomeView({ onStartPrediction, onOpenSecurity, onExploreMap }) {
+export default function HomeView({ onStartPrediction, onExploreMap }) {
   const [heroRef, heroVisible] = useScrollReveal();
   const [eduRef, eduVisible] = useScrollReveal();
   const [mapSpotlightRef, mapSpotlightVisible] = useScrollReveal();
   const [catRef, catVisible] = useScrollReveal();
   const [workflowRef, workflowVisible] = useScrollReveal();
-  const [secRef, secVisible] = useScrollReveal();
 
   const aqiCategories = [
     { range: '0 - 50', label: 'Good', color: '#10b981', desc: 'Minimal impact on health. Ideal for outdoor recreation.' },
@@ -60,13 +59,6 @@ export default function HomeView({ onStartPrediction, onOpenSecurity, onExploreM
               className="flex items-center gap-2 px-6 py-3.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-cyan-300 hover:text-white font-bold text-sm md:text-base shadow-lg transition"
             >
               <span>Explore Pollution Map</span>
-            </button>
-            <button
-              onClick={onOpenSecurity}
-              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white text-sm font-semibold transition"
-            >
-              <ShieldCheck size={16} className="text-emerald-400" />
-              <span>Security Controls</span>
             </button>
           </div>
 
@@ -248,32 +240,6 @@ export default function HomeView({ onStartPrediction, onOpenSecurity, onExploreM
         </div>
       </section>
 
-      {/* Production Security Card */}
-      <section
-        ref={secRef}
-        className={`glass-card p-8 md:p-10 space-y-6 border-emerald-500/20 bg-linear-to-br from-slate-900/80 via-slate-900/50 to-emerald-950/20 transition-all duration-700 ${
-          secVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-        }`}
-      >
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
-              <ShieldCheck size={14} /> Built with Enterprise Security
-            </div>
-            <h2 className="text-2xl font-bold text-white">Full-Stack Security & Defense in Depth</h2>
-            <p className="text-sm text-slate-300 max-w-2xl leading-relaxed">
-              Equipped with IP-based sliding window rate limiting (Anti-DoS), OWASP security headers (CSP, HSTS, X-Frame-Options), strict Pydantic input scrubbing, and buffer overflow payload guards.
-            </p>
-          </div>
-          <button
-            onClick={onOpenSecurity}
-            className="px-5 py-3 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 text-xs font-bold transition flex items-center gap-2 shrink-0"
-          >
-            <Lock size={15} />
-            <span>Open Security Audit</span>
-          </button>
-        </div>
-      </section>
     </div>
   );
 }

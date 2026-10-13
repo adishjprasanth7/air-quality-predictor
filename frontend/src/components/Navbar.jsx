@@ -1,7 +1,7 @@
 import React from 'react';
-import { Wind, Activity, BarChart3, Cpu, GitBranch, ShieldCheck, MapPin, LogIn, LogOut } from 'lucide-react';
+import { Wind, Activity, BarChart3, Cpu, GitBranch, MapPin, LogIn, LogOut } from 'lucide-react';
 
-export default function Navbar({ activeTab, setActiveTab, apiStatus, session, onSignOut, onOpenSecurity }) {
+export default function Navbar({ activeTab, setActiveTab, session, onSignOut }) {
   const navItems = [
     { id: 'home', label: 'Home & AQI Guide', icon: Wind },
     { id: 'map', label: 'Pollution Map & Cities', icon: MapPin },
@@ -73,23 +73,6 @@ export default function Navbar({ activeTab, setActiveTab, apiStatus, session, on
               <span>Sign in</span>
             </button>
           )}
-          {/* Security Status Badge & Button */}
-          <button
-            onClick={onOpenSecurity}
-            title="View Live OWASP Security Defense Report"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-emerald-500/30 hover:border-emerald-400/60 text-emerald-400 text-xs font-semibold transition duration-200 hover:shadow-lg hover:shadow-emerald-500/10"
-          >
-            <ShieldCheck size={14} className="text-emerald-400" />
-            <span className="hidden sm:inline">OWASP Hardened</span>
-          </button>
-
-          {/* API Health */}
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-white/10 text-xs">
-            <span className={`w-2 h-2 rounded-full ${apiStatus === 'online' ? 'bg-cyan-400 animate-pulse' : 'bg-amber-400'}`} />
-            <span className="text-slate-300 font-medium font-mono text-[11px]">
-              {apiStatus === 'online' ? 'API Online' : 'Connecting...'}
-            </span>
-          </div>
         </div>
       </div>
     </header>

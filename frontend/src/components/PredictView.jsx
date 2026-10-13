@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Activity, AlertCircle, RefreshCw, Sparkles, CheckCircle, ShieldAlert, Heart, Info, Lock, MapPin } from 'lucide-react';
+import { Activity, AlertCircle, RefreshCw, Sparkles, CheckCircle, ShieldAlert, Heart, Info, MapPin } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollAnimation';
 import { API_BASE_URL } from '../config/api';
 import { CITIES_POLLUTION_DATA } from '../data/citiesData';
@@ -400,14 +400,6 @@ export default function PredictView({ onPredictionSuccess, initialCityData, onNa
             </button>
           </div>
 
-          {/* Security & Sanitization notice */}
-          <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1 font-mono">
-            <span className="flex items-center gap-1.5">
-              <Lock size={12} className="text-emerald-400" />
-              Input Sanitization Active
-            </span>
-            <span>Max 64KB Payload Shield</span>
-          </div>
         </form>
 
         {/* Prediction Results Display (Glass Card with Glowing Borders) */}

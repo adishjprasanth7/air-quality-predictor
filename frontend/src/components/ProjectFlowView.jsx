@@ -67,7 +67,7 @@ export default function ProjectFlowView() {
     },
     {
       title: 'FastAPI Microservice',
-      subtitle: 'Serving REST endpoints (/health, /model-info, /predict, /predictions, /security-status)',
+      subtitle: 'Serving REST endpoints (/health, /model-info, /predict, /predictions)',
       icon: Server,
       tag: 'Backend API',
       color: 'border-teal-500/40 text-teal-400 bg-teal-500/10'

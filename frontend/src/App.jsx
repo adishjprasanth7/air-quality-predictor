@@ -6,36 +6,14 @@ import PredictView from './components/PredictView';
 import DashboardView from './components/DashboardView';
 import ModelInfoView from './components/ModelInfoView';
 import ProjectFlowView from './components/ProjectFlowView';
-import SecurityModal from './components/SecurityModal';
 import LoginView from './components/LoginView';
 import { API_BASE_URL } from './config/api';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
-  const [apiStatus, setApiStatus] = useState('offline');
-  const [isSecurityOpen, setIsSecurityOpen] = useState(false);
   const [selectedCityForPredict, setSelectedCityForPredict] = useState(null);
   const [session, setSession] = useState(null);
   const [authError, setAuthError] = useState('');
-
-  const checkApiHealth = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/health`);
-      if (res.ok) {
-        setApiStatus('online');
-      } else {
-        setApiStatus('offline');
-      }
-    } catch {
-      setApiStatus('offline');
-    }
-  };
-
-  useEffect(() => {
-    checkApiHealth();
-    const interval = setInterval(checkApiHealth, 10000);
-    return () => clearInterval(interval);
-  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -79,14 +57,12 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-cyan-400 selection:text-slate-950">
-      {/* Navigation with Glass Theme and Security Trigger */}
+      {/* Main navigation */}
       <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        apiStatus={apiStatus}
         session={session}
         onSignOut={handleSignOut}
-        onOpenSecurity={() => setIsSecurityOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -101,7 +77,6 @@ export default function App() {
           <HomeView
             onStartPrediction={() => setActiveTab('predict')}
             onExploreMap={() => setActiveTab('map')}
-            onOpenSecurity={() => setIsSecurityOpen(true)}
           />
         )}
         {activeTab === 'map' && (
@@ -134,26 +109,11 @@ export default function App() {
         )}
       </main>
 
-      {/* Security Audit Modal */}
-      <SecurityModal
-        isOpen={isSecurityOpen}
-        onClose={() => setIsSecurityOpen(false)}
-      />
-
       {/* Footer */}
       <footer className="border-t border-white/10 bg-slate-950/80 backdrop-blur-md px-6 py-8 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© 2026 AeroVision • AI-Based Air Quality Predictor • Powered by Scikit-Learn & FastAPI</p>
-          <div className="flex items-center gap-4 text-slate-400">
-            <button
-              onClick={() => setIsSecurityOpen(true)}
-              className="text-emerald-400 hover:text-emerald-300 font-medium underline-offset-4 hover:underline transition"
-            >
-              Security Defense Audit
-            </button>
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-            <span className="font-mono text-slate-500">v1.1.0 (OWASP Hardened)</span>
-          </div>
+          <span className="font-mono text-slate-500">v1.1.0</span>
         </div>
       </footer>
     </div>
