@@ -89,6 +89,16 @@ class AuthenticationTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('id="root"', response.text)
 
+    def test_model_evaluation_endpoint_returns_required_data(self):
+        response = self.client.get("/model-info")
+        self.assertEqual(response.status_code, 200)
+
+        model_info = response.json()
+        self.assertEqual(model_info["model_name"], "Gradient Boosting Regressor")
+        self.assertIn("R2_Score", model_info["best_metrics"])
+        self.assertTrue(model_info["all_model_evaluations"])
+        self.assertTrue(model_info["feature_importance"])
+
 
 if __name__ == "__main__":
     unittest.main()
