@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wind, Activity, BarChart3, Cpu, GitBranch, MapPin, LogIn, LogOut } from 'lucide-react';
+import { Wind, Activity, BarChart3, Cpu, MapPin, LogIn, LogOut } from 'lucide-react';
 
 export default function Navbar({ activeTab, setActiveTab, session, onSignOut }) {
   const navItems = [
@@ -8,7 +8,6 @@ export default function Navbar({ activeTab, setActiveTab, session, onSignOut }) 
     { id: 'predict', label: 'Predict AQI', icon: Activity },
     { id: 'dashboard', label: 'Dashboard & History', icon: BarChart3 },
     { id: 'model', label: 'ML Model & Evaluation', icon: Cpu },
-    { id: 'flow', label: 'Project Architecture', icon: GitBranch },
   ];
 
   return (

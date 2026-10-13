@@ -5,7 +5,6 @@ import PollutionMapView from './components/PollutionMapView';
 import PredictView from './components/PredictView';
 import DashboardView from './components/DashboardView';
 import ModelInfoView from './components/ModelInfoView';
-import ProjectFlowView from './components/ProjectFlowView';
 import LoginView from './components/LoginView';
 import { API_BASE_URL } from './config/api';
 
@@ -96,9 +95,6 @@ export default function App() {
         )}
         {activeTab === 'model' && (
           <ModelInfoView />
-        )}
-        {activeTab === 'flow' && (
-          <ProjectFlowView />
         )}
         {activeTab === 'login' && (
           <LoginView
