@@ -234,7 +234,7 @@ export default function HomeView({ onStartPrediction, onExploreMap }) {
             </div>
             <h3 className="font-bold text-white text-base">Advisory & Database Audit</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Maps AQI to official NAQI risk categories, delivers medical precautions, and stores prediction history in the application database.
+              Maps AQI to official NAQI risk categories and delivers practical health precautions.
             </p>
           </div>
         </div>

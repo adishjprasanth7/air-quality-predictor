@@ -102,7 +102,7 @@ export default function LoginView({ onBack, onAuthenticated, session }) {
           <p className="login-eyebrow">YOUR AIR QUALITY WORKSPACE</p>
           <h1 id="login-title">{mode === 'signup' ? 'Create your account' : 'Welcome back'}</h1>
           <p className="login-form-intro">
-            {mode === 'signup' ? 'Create an account to access your dashboard.' : 'Sign in to continue to your dashboard.'}
+            {mode === 'signup' ? 'Create an account to continue.' : 'Sign in to continue.'}
           </p>
 
           {session && (

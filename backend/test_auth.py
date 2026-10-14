@@ -1,5 +1,6 @@
 import os
 import unittest
+from unittest.mock import patch
 
 os.environ["DATABASE_URL"] = "sqlite:///:memory:"
 os.environ["SESSION_COOKIE_SECURE"] = "false"
@@ -68,6 +69,24 @@ class AuthenticationTests(unittest.TestCase):
             json={"email": "not-an-email", "password": "short"},
         )
         self.assertEqual(response.status_code, 422)
+
+    def test_configured_api_key_is_required(self):
+        with patch.dict(os.environ, {"API_KEY": "test-api-key"}):
+            missing = self.client.get("/security-status")
+            invalid = self.client.get(
+                "/security-status",
+                headers={"X-API-Key": "wrong-key"},
+            )
+            accepted = self.client.get(
+                "/security-status",
+                headers={"X-API-Key": "test-api-key"},
+            )
+            health = self.client.get("/health")
+
+        self.assertEqual(missing.status_code, 401)
+        self.assertEqual(invalid.status_code, 401)
+        self.assertEqual(accepted.status_code, 200)
+        self.assertEqual(health.status_code, 200)
 
     def test_predictions_are_saved_to_database(self):
         response = self.client.post(

@@ -1,13 +1,11 @@
 import React from 'react';
-import { Wind, Activity, BarChart3, Cpu, MapPin, LogIn, LogOut } from 'lucide-react';
+import { Wind, Activity, MapPin, LogIn, LogOut } from 'lucide-react';
 
 export default function Navbar({ activeTab, setActiveTab, session, onSignOut }) {
   const navItems = [
     { id: 'home', label: 'Home & AQI Guide', icon: Wind },
     { id: 'map', label: 'Pollution Map & Cities', icon: MapPin },
     { id: 'predict', label: 'Predict AQI', icon: Activity },
-    { id: 'dashboard', label: 'Dashboard & History', icon: BarChart3 },
-    { id: 'model', label: 'ML Model & Evaluation', icon: Cpu },
   ];
 
   return (

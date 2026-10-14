@@ -3,8 +3,6 @@ import Navbar from './components/Navbar';
 import HomeView from './components/HomeView';
 import PollutionMapView from './components/PollutionMapView';
 import PredictView from './components/PredictView';
-import DashboardView from './components/DashboardView';
-import ModelInfoView from './components/ModelInfoView';
 import LoginView from './components/LoginView';
 import { API_BASE_URL } from './config/api';
 
@@ -89,12 +87,6 @@ export default function App() {
             onNavigateToMap={() => setActiveTab('map')}
             onPredictionSuccess={() => {}}
           />
-        )}
-        {activeTab === 'dashboard' && (
-          <DashboardView onGoToPredict={() => setActiveTab('predict')} />
-        )}
-        {activeTab === 'model' && (
-          <ModelInfoView />
         )}
         {activeTab === 'login' && (
           <LoginView

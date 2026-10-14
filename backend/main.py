@@ -161,6 +161,17 @@ async def security_guard_middleware(request: Request, call_next):
             headers={"Retry-After": str(RATE_LIMIT_WINDOW)}
         )
 
+    # 3. Optional API key for server-to-server access
+    api_key = os.getenv("API_KEY")
+    if api_key and request.url.path != "/health" and request.method != "OPTIONS":
+        provided_api_key = request.headers.get("X-API-Key", "")
+        if not hmac.compare_digest(provided_api_key.encode("utf-8"), api_key.encode("utf-8")):
+            return JSONResponse(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                content={"detail": "Invalid or missing API key."},
+                headers={"WWW-Authenticate": "ApiKey"},
+            )
+
     # Process request
     response: Response = await call_next(request)
 
