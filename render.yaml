@@ -4,7 +4,7 @@ services:
     runtime: docker
     dockerfilePath: ./Dockerfile
     dockerContext: .
-    plan: starter
+    plan: 0.5c-512mb
     healthCheckPath: /health
     envVars:
       - key: DATABASE_URL
@@ -18,4 +18,4 @@ databases:
   - name: aerovision-db
     databaseName: aerovision
     user: aerovision
-    plan: basic-256mb
+    plan: 0.1c-256mb
