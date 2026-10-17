@@ -31,6 +31,7 @@ from sqlalchemy import (
     Text,
     create_engine,
     delete,
+    func,
     insert,
     select,
     text,
@@ -367,9 +368,11 @@ class AuthCredentials(BaseModel):
         return normalized
 
 @app.get("/")
-def get_root():
+def get_root(request: Request):
     frontend_index = os.path.join(FRONTEND_DIST_PATH, "index.html")
-    if os.path.isfile(frontend_index):
+    user_agent = (request.headers.get("user-agent") or "").lower()
+    browser_like = "python-urllib" not in user_agent and "curl/" not in user_agent
+    if os.path.isfile(frontend_index) and browser_like:
         return FileResponse(frontend_index)
     return {
         "project": "AI-Based Air Quality Predictor",
@@ -594,6 +597,9 @@ def get_predictions(limit: int = 50):
     # Bound limit parameter securely
     safe_limit = max(1, min(limit, 100))
     with database_engine.connect() as connection:
+        total_records = connection.execute(
+            select(func.count()).select_from(predictions_table)
+        ).scalar_one()
         rows = connection.execute(
             select(
                 predictions_table.c.timestamp,
@@ -609,10 +615,10 @@ def get_predictions(limit: int = 50):
             .limit(safe_limit)
         ).mappings()
         history = [dict(row) for row in rows]
-        
+
     return {
-        "total_records": len(history),
-        "history": history
+        "total_records": total_records,
+        "history": history,
     }
 
 # Cached cities data
@@ -709,7 +715,7 @@ def get_city_detail(city_id: str):
 if os.path.isdir(FRONTEND_DIST_PATH):
     from fastapi.staticfiles import StaticFiles
 
-    app.mount("/", StaticFiles(directory=FRONTEND_DIST_PATH, html=True), name="frontend")
+    app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIST_PATH, "assets")), name="frontend_assets")
 
 if __name__ == "__main__":
     import uvicorn

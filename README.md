@@ -210,6 +210,9 @@ npm run dev
 ```
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
+### Google Maps key
+Enable the Maps JavaScript API and billing in Google Cloud, then create a browser key restricted to your website's HTTP referrers. For local development, set `VITE_GOOGLE_MAPS_API_KEY` in `frontend/.env`. For Render, add the same variable to the service environment; the Docker build passes it to Vite. This key is included in browser code, so restrict it by referrer and allowed API.
+
 ---
 
 ## 10. API Specification

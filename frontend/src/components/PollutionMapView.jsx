@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import L from 'leaflet';
+import { importLibrary, setOptions } from '@googlemaps/js-api-loader';
 import {
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid
 } from 'recharts';
@@ -159,6 +159,32 @@ const METRIC_CONFIGS = {
   }
 };
 
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY?.trim() || '';
+let googleMapsLibraryPromise;
+
+function loadGoogleMapsLibrary() {
+  if (!GOOGLE_MAPS_API_KEY) {
+    return Promise.reject(new Error('Google Maps API key is missing.'));
+  }
+
+  if (!googleMapsLibraryPromise) {
+    setOptions({ key: GOOGLE_MAPS_API_KEY, v: 'weekly' });
+    googleMapsLibraryPromise = importLibrary('maps');
+  }
+
+  return googleMapsLibraryPromise;
+}
+
+function escapeSvgText(value) {
+  return String(value).replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&apos;'
+  })[character]);
+}
+
 export default function PollutionMapView({ onSelectCityForPrediction }) {
   const [containerRef, containerVisible] = useScrollReveal({ threshold: 0.05 });
   const [cities, setCities] = useState(CITIES_POLLUTION_DATA);
@@ -169,10 +195,15 @@ export default function PollutionMapView({ onSelectCityForPrediction }) {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [viewMode, setViewMode] = useState('split'); // 'split' | 'map' | 'table'
   const [loading, setLoading] = useState(false);
+  const [mapReady, setMapReady] = useState(false);
+  const [mapError, setMapError] = useState('');
+  const mapFallbackEnabled = !GOOGLE_MAPS_API_KEY || Boolean(mapError);
 
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersRef = useRef({});
+  const mapsLibraryRef = useRef(null);
+  const infoWindowRef = useRef(null);
 
   // Fetch live cities data from backend if available
   useEffect(() => {
@@ -217,97 +248,99 @@ export default function PollutionMapView({ onSelectCityForPrediction }) {
   // Metric metadata
   const currentMetricConfig = METRIC_CONFIGS[activeMetric];
 
-  // Initialize and manage Leaflet map
+  // Load Google Maps when the split layout mounts its map container.
   useEffect(() => {
-    if (!mapContainerRef.current) return;
+    if (viewMode !== 'split' || !mapContainerRef.current) return undefined;
 
-    if (!mapInstanceRef.current) {
-      const map = L.map(mapContainerRef.current, {
-        center: [21.5, 82.0],
-        zoom: 4.6,
-        minZoom: 4,
-        maxZoom: 12,
-        zoomControl: true,
-        attributionControl: true,
-        scrollWheelZoom: true
-      });
-
-      // CartoDB Dark Matter tile layer
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 19
-      }).addTo(map);
-
-      mapInstanceRef.current = map;
+    let cancelled = false;
+    if (!GOOGLE_MAPS_API_KEY) {
+      return undefined;
     }
 
-    const map = mapInstanceRef.current;
+    const initializeMap = async () => {
+      try {
+        const maps = await loadGoogleMapsLibrary();
+        if (cancelled || !mapContainerRef.current) return;
 
-    // Clear old markers
-    Object.values(markersRef.current).forEach((m) => m.remove());
+        mapsLibraryRef.current = maps;
+        mapInstanceRef.current = new maps.Map(mapContainerRef.current, {
+          center: { lat: 21.5, lng: 82.0 },
+          zoom: 4.6,
+          minZoom: 4,
+          maxZoom: 12,
+          mapTypeId: 'roadmap',
+          mapTypeControl: false,
+          streetViewControl: false,
+          styles: [
+            { elementType: 'geometry', stylers: [{ color: '#18212e' }] },
+            { elementType: 'labels.text.fill', stylers: [{ color: '#cbd5e1' }] },
+            { elementType: 'labels.text.stroke', stylers: [{ color: '#0b1220' }] },
+            { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#29384b' }] },
+            { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0a1726' }] },
+            { featureType: 'poi', stylers: [{ visibility: 'off' }] }
+          ]
+        });
+        infoWindowRef.current = new maps.InfoWindow({ maxWidth: 280 });
+        setMapError('');
+        setMapReady(true);
+      } catch (error) {
+        console.error('Could not load Google Maps:', error);
+        if (!cancelled) {
+          setMapError('Google Maps could not load. Check the key, Maps JavaScript API, billing, and website referrer restrictions.');
+        }
+      }
+    };
+
+    initializeMap();
+    return () => {
+      cancelled = true;
+      infoWindowRef.current?.close();
+      Object.values(markersRef.current).forEach(({ marker }) => marker.setMap(null));
+      markersRef.current = {};
+      mapInstanceRef.current = null;
+      mapsLibraryRef.current = null;
+      setMapReady(false);
+    };
+  }, [viewMode]);
+
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    const maps = mapsLibraryRef.current;
+    if (!mapReady || !map || !maps) return undefined;
+
+    Object.values(markersRef.current).forEach(({ marker }) => marker.setMap(null));
     markersRef.current = {};
 
-    // Create markers for filtered cities
     filteredCities.forEach((city) => {
-      const isSelected = city.id === selectedCityId;
       const metricValue = currentMetricConfig.getValue(city);
       const markerColor = currentMetricConfig.getColor(metricValue);
-
-      // Convert hex to rgb for glow
-      const hexToRgb = (hex) => {
-        const r = parseInt(hex.slice(1, 3), 16) || 0;
-        const g = parseInt(hex.slice(3, 5), 16) || 229;
-        const b = parseInt(hex.slice(5, 7), 16) || 255;
-        return `${r}, ${g}, ${b}`;
+      const createMarkerIcon = (isSelected) => {
+        const cityLabel = escapeSvgText(city.city);
+        const valueLabel = Math.round(metricValue);
+        const svg = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="156" height="56" viewBox="0 0 156 56">
+            <rect x="1" y="25" width="154" height="27" rx="9" fill="#07111f" fill-opacity=".96" stroke="${isSelected ? '#22d3ee' : markerColor}" stroke-width="${isSelected ? 2 : 1}" />
+            <circle cx="78" cy="12" r="11" fill="${markerColor}" stroke="#ffffff" stroke-width="2" />
+            <text x="78" y="16" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#07111f">${valueLabel}</text>
+            <text x="78" y="43" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#f8fafc">${cityLabel}</text>
+          </svg>`;
+        return {
+          url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`,
+          scaledSize: new maps.Size(156, 56),
+          anchor: new maps.Point(78, 12)
+        };
       };
-      const rgbGlow = hexToRgb(markerColor);
 
-      // Create customized HTML icon
-      const iconHtml = `
-        <div class="relative cursor-pointer group transform transition-all duration-300 hover:scale-125" style="--marker-pulse-rgb: ${rgbGlow}">
-          <!-- Outer Pulsing Aura -->
-          <div class="absolute -inset-2 rounded-full ${isSelected ? 'city-map-marker-pulse' : 'opacity-40'}" style="background-color: ${markerColor}33; border: 1.5px solid ${markerColor}66;"></div>
-          
-          <!-- Marker Core Pin -->
-          <div class="relative flex items-center justify-center rounded-full text-slate-950 font-bold shadow-lg shadow-black/80 transition-all ${
-            isSelected ? 'ring-4 ring-cyan-400 ring-offset-2 ring-offset-slate-950 scale-110' : ''
-          }" style="width: 32px; height: 32px; background: linear-gradient(135deg, ${markerColor}, #ffffff 200%); border: 2px solid #ffffff;">
-            <span class="text-[11px] font-black tracking-tight font-mono">${Math.round(metricValue)}</span>
-          </div>
-
-          <!-- City Label Floating Tag -->
-          <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-0.5 rounded-md text-[10px] font-bold backdrop-blur-md transition-all shadow-md ${
-            isSelected
-              ? 'bg-cyan-400 text-slate-950 shadow-cyan-400/40 ring-1 ring-white font-black'
-              : 'bg-slate-950/85 text-slate-200 border border-white/10 group-hover:bg-slate-900 group-hover:text-white'
-          }">
-            ${city.city}
-          </div>
-        </div>
-      `;
-
-      const customIcon = L.divIcon({
-        html: iconHtml,
-        className: 'custom-aqi-city-pin',
-        iconSize: [32, 32],
-        iconAnchor: [16, 16],
-        popupAnchor: [0, -20]
-      });
-
-      const marker = L.marker([city.lat, city.lng], { icon: customIcon }).addTo(map);
-
-      // Tooltip popup
+      const normalIcon = createMarkerIcon(false);
+      const selectedIcon = createMarkerIcon(true);
       const popupHtml = `
-        <div style="font-family: inherit; min-width: 180px; padding: 4px;">
+        <div style="font-family: Arial, sans-serif; min-width: 180px; padding: 4px; color: #f8fafc;">
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px;">
             <strong style="color: #ffffff; font-size: 14px;">${city.city}</strong>
-            <span style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 9999px; background-color: ${city.color}25; color: ${city.color}; border: 1px solid ${city.color}50;">
-              ${city.category}
-            </span>
+            <span style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 9999px; background-color: ${city.color}25; color: ${city.color}; border: 1px solid ${city.color}50;">${city.category}</span>
           </div>
-          <div style="color: #94a3b8; font-size: 11px; margin-bottom: 4px;">${city.state} • ${city.region} Region</div>
-          <div style="display: flex; align-items: baseline; gap: 6px; margin: 8px 0; padding: 6px; border-radius: 8px; background: rgba(255,255,255,0.05);">
+          <div style="color: #94a3b8; font-size: 11px; margin-bottom: 4px;">${city.state} | ${city.region} Region</div>
+          <div style="display: flex; align-items: baseline; gap: 6px; margin: 8px 0; padding: 6px; border-radius: 8px; background: #18212e;">
             <span style="font-size: 20px; font-weight: 900; color: ${markerColor};">${metricValue}</span>
             <span style="font-size: 10px; color: #cbd5e1;">${currentMetricConfig.unit} (${currentMetricConfig.name.split(' ')[0]})</span>
           </div>
@@ -315,45 +348,74 @@ export default function PollutionMapView({ onSelectCityForPrediction }) {
             <span>Dominant Pollutant:</span>
             <strong style="color: #00e5ff;">${city.dominant_pollutant}</strong>
           </div>
-          <div style="margin-top: 8px; font-size: 10px; color: #38bdf8; text-align: center; font-weight: 600;">
-            Click to view full telemetry →
-          </div>
-        </div>
-      `;
+          <div style="margin-top: 8px; font-size: 10px; color: #38bdf8; text-align: center; font-weight: 600;">Click to view full telemetry</div>
+        </div>`;
 
-      marker.bindPopup(popupHtml);
-
-      marker.on('click', () => {
+      const marker = new maps.Marker({
+        map,
+        position: { lat: Number(city.lat), lng: Number(city.lng) },
+        title: city.city,
+        icon: normalIcon,
+        zIndex: 1
+      });
+      marker.addListener('click', () => {
         setSelectedCityId(city.id);
+        infoWindowRef.current.setContent(popupHtml);
+        infoWindowRef.current.open({ map, anchor: marker });
       });
 
-      markersRef.current[city.id] = marker;
+      markersRef.current[city.id] = { marker, normalIcon, selectedIcon, popupHtml };
     });
 
-    return () => {};
-  }, [filteredCities, activeMetric, selectedCityId, currentMetricConfig]);
+    return () => {
+      Object.values(markersRef.current).forEach(({ marker }) => marker.setMap(null));
+      markersRef.current = {};
+    };
+  }, [filteredCities, activeMetric, currentMetricConfig, mapReady]);
+
+  useEffect(() => {
+    Object.entries(markersRef.current).forEach(([cityId, entry]) => {
+      const isSelected = cityId === selectedCityId;
+      entry.marker.setIcon(isSelected ? entry.selectedIcon : entry.normalIcon);
+      entry.marker.setZIndex(isSelected ? 100 : 1);
+    });
+  }, [selectedCityId, mapReady, filteredCities, activeMetric]);
 
   // Center map on selected city when changed
   const handleSelectCity = (city) => {
     setSelectedCityId(city.id);
     if (mapInstanceRef.current) {
-      mapInstanceRef.current.flyTo([city.lat, city.lng], 6.5, {
-        duration: 1.0,
-        easeLinearity: 0.25
-      });
-      // Open popup
-      const marker = markersRef.current[city.id];
-      if (marker) {
-        marker.openPopup();
+      mapInstanceRef.current.panTo({ lat: Number(city.lat), lng: Number(city.lng) });
+      mapInstanceRef.current.setZoom(6.5);
+      const markerEntry = markersRef.current[city.id];
+      if (markerEntry && infoWindowRef.current) {
+        infoWindowRef.current.setContent(markerEntry.popupHtml);
+        infoWindowRef.current.open({ map: mapInstanceRef.current, anchor: markerEntry.marker });
       }
     }
   };
 
   const handleResetMapView = () => {
     if (mapInstanceRef.current) {
-      mapInstanceRef.current.flyTo([21.5, 82.0], 4.6, { duration: 1.0 });
+      mapInstanceRef.current.panTo({ lat: 21.5, lng: 82.0 });
+      mapInstanceRef.current.setZoom(4.6);
     }
   };
+
+  const fallbackCityDots = filteredCities.map((city) => {
+    const metricValue = currentMetricConfig.getValue(city);
+    const x = ((Number(city.lng) - 68) / 30) * 100;
+    const y = ((37 - Number(city.lat)) / 25) * 100;
+    const isSelected = city.id === selectedCityId;
+    return {
+      ...city,
+      x: Math.min(96, Math.max(4, x)),
+      y: Math.min(96, Math.max(4, y)),
+      metricValue,
+      color: currentMetricConfig.getColor(metricValue),
+      isSelected,
+    };
+  });
 
   const regions = ['All', 'North', 'South', 'East', 'West', 'Central', 'Northeast'];
   const categories = ['All', 'Good', 'Satisfactory', 'Moderate', 'Poor', 'Very Poor', 'Severe'];
@@ -650,11 +712,53 @@ export default function PollutionMapView({ onSelectCityForPrediction }) {
             </div>
 
             {/* Map Container */}
-            <div
-              ref={mapContainerRef}
-              id="leaflet-air-quality-map"
-              className="flex-1 w-full rounded-2xl overflow-hidden border border-white/5"
-            />
+            <div className="relative flex-1 min-h-80 overflow-hidden rounded-2xl border border-white/5 bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.18),_transparent_35%),linear-gradient(180deg,_#020817,_#0f172a)]">
+              {!mapFallbackEnabled ? (
+                <div ref={mapContainerRef} id="google-air-quality-map" className="absolute inset-0" />
+              ) : (
+                <div className="absolute inset-0">
+                  <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="h-full w-full opacity-25">
+                    <path
+                      d="M25 18 L32 12 L37 17 L39 13 L46 16 L50 12 L58 14 L62 22 L67 26 L69 33 L75 41 L74 48 L69 55 L64 60 L57 62 L52 68 L46 73 L41 80 L36 78 L31 71 L23 68 L17 60 L12 51 L13 40 L18 30 Z"
+                      fill="rgba(34,211,238,0.18)"
+                      stroke="rgba(148,163,184,0.6)"
+                      strokeWidth="0.8"
+                    />
+                  </svg>
+                  <div className="absolute inset-0">
+                    {fallbackCityDots.map((city) => (
+                      <button
+                        key={city.id}
+                        type="button"
+                        onClick={() => handleSelectCity(city)}
+                        title={`${city.city}: ${city.metricValue}`}
+                        className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border shadow-lg transition-all"
+                        style={{
+                          left: `${city.x}%`,
+                          top: `${city.y}%`,
+                          width: city.isSelected ? '20px' : '12px',
+                          height: city.isSelected ? '20px' : '12px',
+                          background: city.color,
+                          borderColor: city.isSelected ? '#e2e8f0' : 'rgba(15,23,42,0.8)',
+                          boxShadow: `0 0 0 3px ${city.color}33`,
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+              {mapError && (
+                <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-950/70 p-6 text-center backdrop-blur-[1px]">
+                  <div className="max-w-md space-y-3 rounded-2xl border border-amber-400/20 bg-slate-950/80 p-4">
+                    <ShieldAlert size={28} className="mx-auto text-amber-300" />
+                    <p className="text-sm font-bold text-white">{mapError}</p>
+                    <p className="text-xs leading-relaxed text-slate-400">
+                      The live Google Map is unavailable, so a fallback station overview is being displayed instead.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* City Telemetry Column (5 Cols on desktop) */}

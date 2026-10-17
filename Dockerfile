@@ -5,6 +5,7 @@ COPY package.json ./package.json
 COPY frontend/package.json frontend/package-lock.json ./frontend/
 RUN npm ci --prefix frontend
 COPY frontend/ ./frontend/
+ARG VITE_GOOGLE_MAPS_API_KEY
 RUN npm run build --prefix frontend
 
 FROM python:3.13-slim
