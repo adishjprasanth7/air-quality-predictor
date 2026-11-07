@@ -190,8 +190,6 @@ Authentication is handled by the FastAPI backend, with accounts and prediction h
 
 The login page supports email/password signup and sign-in. Passwords are stored as scrypt hashes and sessions use HttpOnly cookies. Social login and self-service password reset are not configured.
 
-For server-to-server API access, set `API_KEY` in the backend environment. When configured, send it as the `X-API-Key` request header; requests without a matching key receive `401`. `/health` and CORS preflight requests remain accessible for deployment checks. Leave `API_KEY` unset when using the directly served browser frontend: frontend environment variables are public and must not contain this secret. A browser-based deployment that needs a protected API should call it through a trusted server-side proxy.
-
 ---
 
 ## 9. Running Locally
@@ -210,8 +208,8 @@ npm run dev
 ```
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-### Google Maps key
-Enable the Maps JavaScript API and billing in Google Cloud, then create a browser key restricted to your website's HTTP referrers. For local development, set `VITE_GOOGLE_MAPS_API_KEY` in `frontend/.env`. For Render, add the same variable to the service environment; the Docker build passes it to Vite. This key is included in browser code, so restrict it by referrer and allowed API.
+### Pollution map
+The interactive city map uses OpenStreetMap tiles. Keep the visible OpenStreetMap attribution in the map.
 
 ---
 
