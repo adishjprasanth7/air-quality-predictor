@@ -1,7 +1,7 @@
 import React from 'react';
-import { Wind, Activity, MapPin, LogIn, LogOut } from 'lucide-react';
+import { Wind, Activity, MapPin } from 'lucide-react';
 
-export default function Navbar({ activeTab, setActiveTab, session, onSignOut }) {
+export default function Navbar({ activeTab, setActiveTab }) {
   const navItems = [
     { id: 'home', label: 'Home & AQI Guide', icon: Wind },
     { id: 'map', label: 'Pollution Map & Cities', icon: MapPin },
@@ -50,27 +50,6 @@ export default function Navbar({ activeTab, setActiveTab, session, onSignOut }) 
           })}
         </nav>
 
-        {/* Right Action Widgets */}
-        <div className="flex items-center gap-2.5">
-          {session ? (
-            <button
-              onClick={onSignOut}
-              title={`Sign out ${session.user.email || 'of AeroVision'}`}
-              className="flex items-center gap-2 px-3 py-2 rounded-xl border border-cyan-400/30 text-cyan-200 hover:bg-cyan-400/10 transition text-xs font-semibold whitespace-nowrap"
-            >
-              <LogOut size={15} />
-              <span>Sign out</span>
-            </button>
-          ) : (
-            <button
-              onClick={() => setActiveTab('login')}
-              className="flex items-center gap-2 px-3 py-2 rounded-xl border border-cyan-400/30 text-cyan-200 hover:bg-cyan-400/10 transition text-xs font-semibold whitespace-nowrap"
-            >
-              <LogIn size={15} />
-              <span>Sign in</span>
-            </button>
-          )}
-        </div>
       </div>
     </header>
   );
