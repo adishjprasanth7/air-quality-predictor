@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Activity, AlertCircle, RefreshCw, Sparkles, CheckCircle, ShieldAlert, Heart, Info, MapPin } from 'lucide-react';
+import { Activity, AlertCircle, Sparkles, CheckCircle, ShieldAlert, Heart, Info, MapPin } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollAnimation';
 import { API_BASE_URL } from '../config/api';
 import { CITIES_POLLUTION_DATA } from '../data/citiesData';
@@ -39,7 +39,7 @@ export default function PredictView({ onPredictionSuccess, initialCityData, onNa
     'O3': 32.0
   });
 
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
 
@@ -379,27 +379,6 @@ export default function PredictView({ onPredictionSuccess, initialCityData, onNa
             </div>
           )}
 
-          <div className="pt-2">
-            <button
-              id="predict-aqi-btn"
-              type="submit"
-              disabled={loading}
-              className="glass-btn w-full py-4 text-base rounded-2xl font-black shadow-xl shadow-cyan-400/25 tracking-wide"
-            >
-              {loading ? (
-                <>
-                  <RefreshCw size={20} className="animate-spin text-slate-950" />
-                  <span>Computing Inference in Pipeline...</span>
-                </>
-              ) : (
-                <>
-                  <Activity size={20} className="text-slate-950 stroke-[2.5]" />
-                  <span>Predict AQI with Trained ML Model</span>
-                </>
-              )}
-            </button>
-          </div>
-
         </form>
 
         {/* Prediction Results Display (Glass Card with Glowing Borders) */}
@@ -478,7 +457,7 @@ export default function PredictView({ onPredictionSuccess, initialCityData, onNa
               </div>
               <h3 className="text-lg font-bold text-white">Ready for ML Prediction</h3>
               <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
-                Adjust pollutant concentrations on the left or select an environmental preset, then click <strong>"Predict AQI"</strong> to run inference on the trained Scikit-learn model.
+                Adjust pollutant concentrations on the left or select an environmental preset to prepare an inference with the trained Scikit-learn model.
               </p>
             </div>
           )}
